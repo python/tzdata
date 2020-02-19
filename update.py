@@ -1,14 +1,18 @@
+import io
 import logging
 import os
 import pathlib
+import re
 import shutil
 import subprocess
+import tarfile
 import tempfile
 import typing
 
 import click
 import requests
 
+IANA_LATEST_LOCATION = "https://www.iana.org/time-zones/repository/tzdata-latest.tar.gz"
 SOURCE = "https://data.iana.org/time-zones/releases"
 WORKING_DIR = pathlib.Path("tmp")
 REPO_ROOT = pathlib.Path(__file__).parent
@@ -112,12 +116,33 @@ def create_package(version: str, zoneinfo_dir: pathlib.Path):
             init_file.touch()
 
 
+def find_latest_version() -> str:
+    r = requests.get(IANA_LATEST_LOCATION)
+    fobj = io.BytesIO(r.content)
+    with tarfile.open(fileobj=fobj, mode="r:gz") as tf:
+        vfile = tf.extractfile("version")
+        version = vfile.read().decode("utf-8").strip()
+
+    assert re.match("\d{4}[a-z]$", version), version
+
+    target_dir = WORKING_DIR / version / "download"
+
+    fobj.seek(0)
+    with open(f"tzdata{version}.tar.gz", "wb") as f:
+        f.write(fobj.read())
+
+    return version
+
+
 @click.command()
 @click.option(
     "--version", "-v", default=None, help="The version of the tzdata file to download"
 )
 def main(version: str):
     logging.basicConfig(level=logging.INFO)
+
+    if version is None:
+        version = find_latest_version()
 
     download_locations = download_tzdb_tarballs(version)
     tzdb_location = unpack_tzdb_tarballs(download_locations)

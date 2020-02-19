@@ -1,0 +1,3 @@
+IANA_VERSION = %%IANA_VERSION%%
+
+__version__ = IANA_VERSION
