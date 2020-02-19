@@ -18,5 +18,8 @@ docs/_build/
 .pytest_cache
 .tox
 
+# Temporary files
+tmp/
+
 venv/
 .venv/
