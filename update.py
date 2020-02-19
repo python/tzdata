@@ -10,6 +10,7 @@ import tempfile
 import typing
 
 import click
+
 import requests
 
 IANA_LATEST_LOCATION = "https://www.iana.org/time-zones/repository/tzdata-latest.tar.gz"
@@ -104,7 +105,7 @@ def create_package(version: str, zoneinfo_dir: pathlib.Path):
     # Generate the base __init__.py from a template
     with open(TEMPLATES_DIR / "__init__.py.in", "r") as f_in:
         contents = f_in.read()
-        contents = contents.replace("%%IANA_VERSION%%", version)
+        contents = contents.replace("%%IANA_VERSION%%", f'"{version}"')
 
         with open(target_dir / "__init__.py", "w") as f_out:
             f_out.write(contents)
