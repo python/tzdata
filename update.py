@@ -72,7 +72,9 @@ def unpack_tzdb_tarballs(download_locations: typing.List[pathlib.Path]) -> pathl
     return target_dir
 
 
-def load_zonefiles(base_dir: pathlib.Path) -> pathlib.Path:
+def load_zonefiles(
+    base_dir: pathlib.Path,
+) -> typing.Tuple[typing.List[str], pathlib.Path]:
     target_dir = base_dir.parent / "zoneinfo"
     if target_dir.exists():
         shutil.rmtree(target_dir)
@@ -85,14 +87,21 @@ def load_zonefiles(base_dir: pathlib.Path) -> pathlib.Path:
             ["make", f"DESTDIR={td}", "ZFLAGS=-b slim", "install"], cwd=base_dir
         )
 
+        proc = subprocess.run(
+            ["make", "zonenames"], cwd=base_dir, stdout=subprocess.PIPE, check=True
+        )
+        zonenames = list(map(str.strip, proc.stdout.decode("utf-8").split("\n")))
+
         # Move the zoneinfo files into the target directory
         src_dir = td_path / "usr" / "share" / "zoneinfo"
         shutil.move(os.fspath(src_dir), os.fspath(target_dir))
 
-    return target_dir
+    return zonenames, target_dir
 
 
-def create_package(version: str, zoneinfo_dir: pathlib.Path):
+def create_package(
+    version: str, zonenames: typing.List[str], zoneinfo_dir: pathlib.Path
+):
     """Creates the tzdata package"""
     # First remove the existing package contents
     target_dir = PKG_BASE / "tzdata"
@@ -111,6 +120,10 @@ def create_package(version: str, zoneinfo_dir: pathlib.Path):
 
         with open(target_dir / "__init__.py", "w") as f_out:
             f_out.write(contents)
+
+    # Generate the "zones" file as a newline-delimited list
+    with open(target_dir / "zones", "w") as f:
+        f.write("\n".join(zonenames))
 
     # Now recursively create __init__.py files in every directory we need to
     for dirpath, _, filenames in os.walk(data_dir):
@@ -151,9 +164,9 @@ def main(version: str):
     download_locations = download_tzdb_tarballs(version)
     tzdb_location = unpack_tzdb_tarballs(download_locations)
 
-    zonefile_path = load_zonefiles(tzdb_location)
+    zonenames, zonefile_path = load_zonefiles(tzdb_location)
 
-    create_package(version, zonefile_path)
+    create_package(version, zonenames, zonefile_path)
 
 
 if __name__ == "__main__":
