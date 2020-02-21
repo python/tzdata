@@ -127,9 +127,10 @@ def find_latest_version() -> str:
     assert re.match("\d{4}[a-z]$", version), version
 
     target_dir = WORKING_DIR / version / "download"
+    target_dir.mkdir(parents=True, exist_ok=True)
 
     fobj.seek(0)
-    with open(f"tzdata{version}.tar.gz", "wb") as f:
+    with open(target_dir / f"tzdata{version}.tar.gz", "wb") as f:
         f.write(fobj.read())
 
     return version
