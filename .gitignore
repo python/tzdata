@@ -17,6 +17,7 @@ docs/_build/
 .mypy_cache
 .pytest_cache
 .tox
+.pytype
 
 # Temporary files
 tmp/
