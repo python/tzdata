@@ -139,6 +139,8 @@ def find_latest_version() -> str:
     fobj = io.BytesIO(r.content)
     with tarfile.open(fileobj=fobj, mode="r:gz") as tf:
         vfile = tf.extractfile("version")
+
+        assert vfile is not None, "version file is not a regular file"
         version = vfile.read().decode("utf-8").strip()
 
     assert re.match("\d{4}[a-z]$", version), version
