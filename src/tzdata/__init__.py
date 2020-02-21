@@ -1,0 +1,3 @@
+IANA_VERSION = "2019c"
+
+__version__ = IANA_VERSION
