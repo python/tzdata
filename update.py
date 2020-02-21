@@ -99,8 +99,10 @@ def create_package(version: str, zoneinfo_dir: pathlib.Path):
     if target_dir.exists():
         shutil.rmtree(target_dir)
 
+    data_dir = target_dir / "zoneinfo"
+
     # Next move the zoneinfo file to the target location
-    shutil.move(os.fspath(zoneinfo_dir), target_dir)
+    shutil.move(os.fspath(zoneinfo_dir), data_dir)
 
     # Generate the base __init__.py from a template
     with open(TEMPLATES_DIR / "__init__.py.in", "r") as f_in:
@@ -111,7 +113,7 @@ def create_package(version: str, zoneinfo_dir: pathlib.Path):
             f_out.write(contents)
 
     # Now recursively create __init__.py files in every directory we need to
-    for dirpath, _, filenames in os.walk(target_dir):
+    for dirpath, _, filenames in os.walk(data_dir):
         if "__init__.py" not in filenames:
             init_file = pathlib.Path(dirpath) / "__init__.py"
             init_file.touch()
