@@ -1,1 +1,1 @@
-recursive-include src/tzdata/ *
+recursive-include src/tzdata *
