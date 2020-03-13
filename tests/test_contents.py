@@ -1,9 +1,29 @@
+import sys
+
+import pytest
+
 try:
     from importlib import resources
 except ImportError:
     import importlib_resources as resources
 
-import pytest
+
+if sys.version_info < (3, 6):
+    # pytest-subtests does not support Python < 3.6, but having the tests
+    # separated into clean subtests is nice but not required, so we will create
+    # a stub that does nothing but at least doesn't fail for lack of a fixture.
+    import contextlib
+
+    class _SubTestStub:
+        @contextlib.contextmanager
+        def test(self, **kwargs):
+            yield
+
+    _sub_test_stub = _SubTestStub()
+
+    @pytest.fixture
+    def subtests():
+        yield _sub_test_stub
 
 
 def get_magic(zone_name):
