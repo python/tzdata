@@ -1,3 +1,3 @@
-IANA_VERSION = "2019c"
+IANA_VERSION = "2020a"
 
 __version__ = IANA_VERSION
