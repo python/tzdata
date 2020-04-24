@@ -104,7 +104,9 @@ def load_zonefiles(
 def create_package(
     version: str, zonenames: typing.List[str], zoneinfo_dir: pathlib.Path
 ):
-    """Creates the tzdata package"""
+    """Creates the tzdata package."""
+    package_version = translate_version(version)
+
     # First remove the existing package contents
     target_dir = PKG_BASE / "tzdata"
     if target_dir.exists():
@@ -119,6 +121,7 @@ def create_package(
     with open(TEMPLATES_DIR / "__init__.py.in", "r") as f_in:
         contents = f_in.read()
         contents = contents.replace("%%IANA_VERSION%%", f'"{version}"')
+        contents = contents.replace("%%PACKAGE_VERSION%%", f'"{package_version}"')
 
         with open(target_dir / "__init__.py", "w") as f_out:
             f_out.write(contents)
@@ -153,6 +156,42 @@ def find_latest_version() -> str:
         f.write(fobj.read())
 
     return version
+
+
+def translate_version(iana_version: str) -> str:
+    """Translates from an IANA version to a PEP 440 version string.
+
+    E.g. 2020a -> 2020.1
+    """
+
+    if (
+        len(iana_version) < 5
+        or not iana_version[0:4].isdigit()
+        or not iana_version[4:].isalpha()
+    ):
+        raise ValueError(
+            "IANA version string must be of the format YYYYx where YYYY represents the "
+            f"year and x is in [a-z], found: {iana_version}"
+        )
+
+    version_year = iana_version[0:4]
+    patch_letters = iana_version[4:]
+
+    # From tz-link.html:
+    #
+    # Since 1996, each version has been a four-digit year followed by
+    # lower-case letter (a through z, then za through zz, then zza through zzz,
+    # and so on).
+    if len(patch_letters) > 1 and not all(c == "z" for c in patch_letters[0:-1]):
+        raise ValueError(
+            f"Invalid IANA version number (only the last character may be a letter "
+            f"other than z), found: {iana_version}"
+        )
+
+    final_patch_number = ord(patch_letters[-1]) - ord("a") + 1
+    patch_number = (26 * (len(patch_letters) - 1)) + final_patch_number
+
+    return f"{version_year}.{patch_number:d}"
 
 
 @click.command()
