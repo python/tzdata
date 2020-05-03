@@ -4,4 +4,3 @@ __version__ = "2020.1"
 
 # This exposes the original IANA version number.
 IANA_VERSION = "2020a"
-
