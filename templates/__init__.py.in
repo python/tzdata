@@ -4,4 +4,3 @@ __version__ = %%PACKAGE_VERSION%%
 
 # This exposes the original IANA version number.
 IANA_VERSION = %%IANA_VERSION%%
-
