@@ -81,6 +81,35 @@ To remove all additional markers and get a simple "release" version, use
 For more information on how to use ``bump_version``, run ``tox -e bump_version
 -- -help``.
 
+Making a release
+----------------
+
+Release automation is done via the ``publish.yml`` GitHub Actions workflow,
+which is triggered whenever a new tag is pushed and whenever a new GitHub
+release is made. When a new tag is pushed, the project is built and released to
+`Test PyPI <https://test.pypi.org>`_, and when a GitHub release is made, the
+project is built and released to `PyPI <https://pypi.org>`_.
+
+To make a release:
+
+1. Tag the repository with the current version – you can use the
+   ``./tag_release.sh`` script in the repository root to source the version
+   automatically from the current ``VERSION`` file.
+2. Wait for the GitHub action to succeed, then check the results on
+   https://test.pypi.org/project/tzdata/ .
+3. If everything looks good, go into the GitHub repository's `"releases" tab
+   <https://github.com/python/tzdata/releases>`_ and click "Create a new
+   release"; type the name of the tag into the box, fill out the remainder of
+   the form, and click "Publish".
+4. Check that the release action has succeeded, then check that everything looks
+   OK on https://pypi.org/project/tzdata/ .
+
+If there's a problem with the release, use ``tox -e bump -- --post`` to create
+a post release, and if it's sufficiently serious, yank the broken version.
+
+It is recommended to start with a release candidate first, since even Test PyPI
+is immutable and each release burns a version number.
+
 .. Links
 .. |tox| replace:: ``tox``
 .. _tox: https://tox.readthedocs.io/en/latest/
