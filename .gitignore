@@ -10,6 +10,7 @@ dist/
 
 # Sphinx documentation
 docs/_build/
+docs/_output/
 
 # Testing
 .cache
