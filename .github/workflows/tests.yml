@@ -31,7 +31,7 @@ jobs:
     runs-on: "ubuntu-latest"
     strategy:
       matrix:
-        toxenv: ["build", "pytype"]
+        toxenv: ["build", "pytype", "docs"]
     env:
       TOXENV: ${{ matrix.toxenv }}
 
@@ -47,4 +47,8 @@ jobs:
           python -m pip install --upgrade tox
       - name: Run action
         run: |
-          tox
+          if [[ $TOXENV == "docs" ]]; then
+            tox -- -j auto -bhtml -W -n -a --keep-going
+          else
+            tox
+          fi
