@@ -117,9 +117,10 @@ to package names:
 .. _zoneinfo: https://docs.python.org/3/library/zoneinfo.html
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
 
+   maintaining
 
 
 Indices and tables
