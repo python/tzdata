@@ -10,7 +10,7 @@ import tempfile
 import typing
 
 import click
-
+import parver
 import requests
 
 IANA_LATEST_LOCATION = "https://www.iana.org/time-zones/repository/tzdata-latest.tar.gz"
@@ -105,7 +105,10 @@ def create_package(
     version: str, zonenames: typing.List[str], zoneinfo_dir: pathlib.Path
 ):
     """Creates the tzdata package."""
-    package_version = translate_version(version)
+    # Start out at rc0
+    base_version = parver.Version.parse(translate_version(version))
+    rc_version = base_version.replace(pre_tag="rc", pre=0)
+    package_version = str(rc_version)
 
     # First remove the existing package contents
     target_dir = PKG_BASE / "tzdata"
@@ -125,6 +128,9 @@ def create_package(
 
         with open(target_dir / "__init__.py", "w") as f_out:
             f_out.write(contents)
+
+    with open(REPO_ROOT / "VERSION", "w") as f:
+        f.write(package_version)
 
     # Generate the "zones" file as a newline-delimited list
     with open(target_dir / "zones", "w") as f:
