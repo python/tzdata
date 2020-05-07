@@ -1,0 +1,7 @@
+version: 2 # Required in order to install with pip
+
+python:
+  version: 3.7
+  install:
+    - path: .
+    - requirements: docs/requirements.txt
