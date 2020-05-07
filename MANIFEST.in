@@ -1,1 +1,2 @@
 recursive-include src/tzdata *
+include VERSION
