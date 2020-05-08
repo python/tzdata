@@ -1,2 +1,25 @@
-recursive-include src/tzdata *
+# All the stuff to include
 include VERSION
+include tox.ini
+include LICENSE *.rst *.toml *.yml *.yaml *.ini *.sh *.cfg
+recursive-include licenses *
+recursive-include src/tzdata *
+recursive-include templates *
+graft .github
+
+recursive-include tests *.py
+
+# Documentation
+recursive-include docs *.png
+recursive-include docs *.svg
+recursive-include docs *.py
+recursive-include docs *.rst
+prune docs/_build
+prune docs/_output
+
+# Files and directories incidentally here
+prune build/
+prune dist/
+prune tmp/
+prune src/*.egg-info
+global-exclude *.pyc *.pyo
