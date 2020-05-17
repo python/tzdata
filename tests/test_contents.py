@@ -77,6 +77,10 @@ def test_zone_valid(zone_name):
     assert magic == b"TZif"
 
 
+def test_no_posixrules():
+    assert not resources.is_resource("tzdata.zoneinfo", "posixrules")
+
+
 def test_load_zones(subtests):
     with resources.open_text("tzdata", "zones") as f:
         zones = [z.strip() for z in f]
