@@ -84,7 +84,7 @@ def load_zonefiles(
 
         # First run the makefile, which does all kinds of other random stuff
         subprocess.run(
-            ["make", f"DESTDIR={td}", "ZFLAGS=-b slim", "install"],
+            ["make", f"DESTDIR={td}", "POSIXRULES=", "ZFLAGS=-b slim", "install"],
             cwd=base_dir,
             check=True,
         )
