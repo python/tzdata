@@ -66,7 +66,9 @@ def unpack_tzdb_tarballs(download_locations: typing.List[pathlib.Path]) -> pathl
     for tarball in download_locations:
         logging.info("Unpacking %s to %s", tarball, target_dir)
         subprocess.run(
-            ["tar", "-xf", os.fspath(tarball.absolute())], cwd=target_dir, check=True,
+            ["tar", "-xf", os.fspath(tarball.absolute())],
+            cwd=target_dir,
+            check=True,
         )
 
     return target_dir
