@@ -1,3 +1,19 @@
+# Version 2020.3
+Upstream version 2020c release 2020-10-16T18:15:53+00:00
+
+## Briefly:
+
+Fiji starts DST later than usual, on 2020-12-20.
+
+## Changes to future timestamps
+
+Fiji will start DST on 2020-12-20, instead of 2020-11-08 as previously
+predicted.  DST will still end on 2021-01-17. (Thanks to Raymond Kumar and Alan
+Mintz.)  Assume for now that the later-than-usual start date is a one-time
+departure from the recent pattern.
+
+---
+
 # Version 2020.2
 Upstream version 2020b release 2020-10-07T01:35:04+00:00
 
