@@ -1,4 +1,6 @@
+import dataclasses
 import io
+import itertools
 import logging
 import os
 import pathlib
@@ -7,10 +9,12 @@ import shutil
 import subprocess
 import tarfile
 import tempfile
+import textwrap
 import typing
+from datetime import datetime, timezone
 
 import click
-import parver
+import parver  # type: ignore
 import requests
 
 IANA_LATEST_LOCATION = "https://www.iana.org/time-zones/repository/tzdata-latest.tar.gz"
@@ -19,6 +23,11 @@ WORKING_DIR = pathlib.Path("tmp")
 REPO_ROOT = pathlib.Path(__file__).parent
 PKG_BASE = REPO_ROOT / "src"
 TEMPLATES_DIR = REPO_ROOT / "templates"
+
+SKIP_NEWS_HEADINGS = {
+    "Changes to code",
+    "Changes to build procedure",
+}
 
 
 def download_tzdb_tarballs(
@@ -202,11 +211,181 @@ def translate_version(iana_version: str) -> str:
     return f"{version_year}.{patch_number:d}"
 
 
+##
+# News entry handling
+@dataclasses.dataclass
+class NewsEntry:
+    version: str
+    release_date: datetime
+    categories: typing.Mapping[str, str]
+
+    def to_file(self) -> None:
+        fpath = pathlib.Path("news.d") / (self.version + ".md")
+        release_date = self.release_date.astimezone(timezone.utc)
+        translated_version = translate_version(self.version)
+
+        contents = [f"# Version {translated_version}"]
+        contents.append(
+            f"Upstream version {self.version} release {release_date.isoformat()}"
+        )
+        contents.append("")
+
+        for category, entry in self.categories.items():
+            contents.append(f"## {category}")
+            contents.append("")
+            contents.append(entry)
+            contents.append("")
+
+        with open(fpath, "wt") as f:
+            f.write(("\n".join(contents)).strip())
+
+
+INDENT_RE = re.compile("[^ ]")
+
+
+def get_indent(s: str) -> int:
+    s = s.rstrip()
+    if not s:
+        return 0
+
+    m = INDENT_RE.search(s)
+    assert m is not None
+    return m.span()[0]
+
+
+def read_block(
+    lines: typing.Iterator[str],
+) -> typing.Tuple[typing.Sequence[str], typing.Iterator[str]]:
+    lines, peek = itertools.tee(lines)
+    while not (first_line := next(peek)):
+        next(lines)
+
+    block_indent = get_indent(first_line)
+    block = []
+
+    # The way this loop works: `peek` is always one line ahead of `lines`. It
+    # starts out where `lines` is pointing to the first non-empty line, and
+    # peek is the line after that. We know that if the body of the loop is
+    # reached, the next value in `lines` is part of the block.
+    #
+    # It is done this way so that we can return an iterable pointing at the
+    # first line *after* the block that we just read.
+    for line in peek:
+        block.append(next(lines))
+
+        if not line:
+            block.append(line)
+            continue
+
+        line_indent = get_indent(line)
+        if line_indent < block_indent:
+            # We've dedented, so this is the end of the block.
+            break
+    else:
+        # If we've exhausted `peek` because we're reading the last block in the
+        # file, we won't hit the `break` condition, but we'll still have a
+        # valid line in the `lines` queue.
+        block.append(next(lines))
+
+    return block, lines
+
+
+def parse_categories(news_block: typing.Sequence[str]) -> typing.Mapping[str, str]:
+    blocks = iter(news_block)
+
+    output = {}
+    while True:
+        try:
+            while not (heading := next(blocks)):
+                pass
+        except StopIteration:
+            break
+
+        content_lines, blocks = read_block(blocks)
+
+        heading = heading.strip()
+        if heading in SKIP_NEWS_HEADINGS:
+            continue
+
+        # Merge the contents into paragraphs by grouping into consecutive blocks
+        # of non-empty lines, then joining those lines on a newline.
+        content_paragraphs: typing.Iterable[str] = (
+            "\n".join(paragraph)
+            for _, paragraph in itertools.groupby(content_lines, key=bool)
+        )
+
+        # Now dedent each paragraph and wrap it to 80 characters. This needs to
+        # be done at the per-paragraph level, because `textwrap.wrap` doesn't
+        # recognize paragraph breaks.
+        content_paragraphs = map(textwrap.dedent, content_paragraphs)
+        content_paragraphs = map(
+            "\n".join,
+            (textwrap.wrap(paragraph, width=80) for paragraph in content_paragraphs),
+        )
+
+        # Finally we can join the paragraphs into a single string and trim
+        # whitespace from it
+        contents = "\n".join(content_paragraphs)
+        contents = contents.strip()
+
+        output[heading] = contents
+
+    return output
+
+
+def read_news(tzdb_loc: pathlib.Path, version: str = None) -> NewsEntry:
+    release_re = re.compile("^Release (?P<version>\d{4}[a-z]) - (?P<date>.*$)")
+    with open(tzdb_loc / "NEWS", "rt") as f:
+        f_lines = map(str.rstrip, f)
+        for line in f_lines:
+            if ((m := release_re.match(line)) is not None) and (
+                version is None or m.group("version") == version
+            ):
+                break
+        else:
+            if version is None:
+                message = "No releases found!"
+            else:
+                message = f"No release found with version {version}"
+
+        assert m is not None
+        version_date = datetime.strptime(m.group("date"), "%Y-%m-%d %H:%M:%S %z")
+        release_version = m.group("version")
+        release_contents, _ = read_block(f_lines)
+
+    # Now we further parse the contents of the news and filter out some
+    # irrelevant categories.
+    categories = parse_categories(release_contents)
+
+    return NewsEntry(release_version, version_date, categories)
+
+
+def update_news(news_entry: NewsEntry):
+    # news.d contains fragments for each tzdata version, and the NEWS file
+    # is assembled by stitching these together each time. First thing we'll do
+    # is add a new fragment.
+    news_entry.to_file()
+
+    # Now go through and join all the files together
+    news_fragment_files = sorted(
+        pathlib.Path("news.d").glob("*.md"), key=lambda p: p.name, reverse=True
+    )
+
+    news_fragments = [p.read_text() for p in news_fragment_files]
+
+    with open("NEWS.md", "wt") as f:
+        f.write("\n\n---\n\n".join(news_fragments))
+
+
 @click.command()
 @click.option(
     "--version", "-v", default=None, help="The version of the tzdata file to download"
 )
-def main(version: str):
+@click.option(
+    "--news-only/--no-news-only",
+    help="Flag to disable data updates and only update the news entry",
+)
+def main(version: str, news_only: bool):
     logging.basicConfig(level=logging.INFO)
 
     if version is None:
@@ -215,9 +394,13 @@ def main(version: str):
     download_locations = download_tzdb_tarballs(version)
     tzdb_location = unpack_tzdb_tarballs(download_locations)
 
-    zonenames, zonefile_path = load_zonefiles(tzdb_location)
+    # Update the news entry
+    news_entry = read_news(tzdb_location, version=version)
+    update_news(news_entry)
 
-    create_package(version, zonenames, zonefile_path)
+    if not news_only:
+        zonenames, zonefile_path = load_zonefiles(tzdb_location)
+        create_package(version, zonenames, zonefile_path)
 
 
 if __name__ == "__main__":
