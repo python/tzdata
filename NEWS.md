@@ -1,3 +1,22 @@
+# Version 2020.4
+Upstream version 2020d released 2020-10-21T18:24:13+00:00
+
+## Briefly:
+
+Palestine ends DST earlier than predicted, on 2020-10-24.
+
+## Changes to past and future timestamps
+
+Palestine ends DST on 2020-10-24 at 01:00, instead of 2020-10-31 as previously
+predicted (thanks to Sharef Mustafa.)  Its 2019-10-26 fall-back was at 00:00,
+not 01:00 (thanks to Steffen Thorsen.)  Its 2015-10-23 transition was at 01:00
+not 00:00, and its spring 2020 transition was on March 28 at 00:00, not March 27
+(thanks to Pierre Cashon.)  This affects Asia/Gaza and Asia/Hebron.  Assume
+future spring and fall transitions will be on the Saturday preceding the last
+Sunday of March and October, respectively.
+
+---
+
 # Version 2020.3
 Upstream version 2020c released 2020-10-16T18:15:53+00:00
 
@@ -11,6 +30,7 @@ Fiji will start DST on 2020-12-20, instead of 2020-11-08 as previously
 predicted.  DST will still end on 2021-01-17. (Thanks to Raymond Kumar and Alan
 Mintz.)  Assume for now that the later-than-usual start date is a one-time
 departure from the recent pattern.
+
 
 ---
 
@@ -62,6 +82,7 @@ Deckers.)
 
 The long-obsolete files pacificnew, systemv, and yearistype.sh have been removed
 from the distribution.  (Thanks to Tim Parenti.)
+
 
 ---
 
