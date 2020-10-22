@@ -226,7 +226,7 @@ class NewsEntry:
 
         contents = [f"# Version {translated_version}"]
         contents.append(
-            f"Upstream version {self.version} release {release_date.isoformat()}"
+            f"Upstream version {self.version} released {release_date.isoformat()}"
         )
         contents.append("")
 

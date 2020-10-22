@@ -1,5 +1,5 @@
 # Version 2020.3
-Upstream version 2020c release 2020-10-16T18:15:53+00:00
+Upstream version 2020c released 2020-10-16T18:15:53+00:00
 
 ## Briefly:
 
@@ -15,7 +15,7 @@ departure from the recent pattern.
 ---
 
 # Version 2020.2
-Upstream version 2020b release 2020-10-07T01:35:04+00:00
+Upstream version 2020b released 2020-10-07T01:35:04+00:00
 
 ## Briefly:
 
@@ -66,7 +66,7 @@ from the distribution.  (Thanks to Tim Parenti.)
 ---
 
 # Version 2020.1
-Upstream version 2020a release 2020-04-23T23:03:47+00:00
+Upstream version 2020a released 2020-04-23T23:03:47+00:00
 
 ## Briefly:
 

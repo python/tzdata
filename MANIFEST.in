@@ -1,7 +1,7 @@
 # All the stuff to include
 include VERSION
 include tox.ini
-include LICENSE *.rst *.toml *.yml *.yaml *.ini *.sh *.cfg
+include LICENSE *.md *.rst *.toml *.yml *.yaml *.ini *.sh *.cfg
 recursive-include licenses *
 recursive-include src/tzdata *
 recursive-include templates *
