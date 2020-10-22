@@ -2,7 +2,7 @@ import argparse
 import io
 import pathlib
 
-import parver
+import parver  # type: ignore
 
 REPO_ROOT = pathlib.Path(__file__).parent
 VERSION = REPO_ROOT / pathlib.Path("VERSION")

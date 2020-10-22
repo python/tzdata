@@ -31,7 +31,7 @@ jobs:
     runs-on: "ubuntu-latest"
     strategy:
       matrix:
-        toxenv: ["build", "precommit", "pytype", "docs"]
+        toxenv: ["build", "precommit", "typing", "docs"]
     env:
       TOXENV: ${{ matrix.toxenv }}
 
