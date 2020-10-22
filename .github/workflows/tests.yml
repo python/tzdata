@@ -1,6 +1,6 @@
 name: tzdata contents
 
-on: [push]
+on: [pull_request]
 
 jobs:
   tests:
