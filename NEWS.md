@@ -1,3 +1,23 @@
+# Version 2021.1
+Upstream version 2021a released 2021-01-24T18:54:57+00:00
+
+## Changes to future timestamps
+
+South Sudan changes from +03 to +02 on 2021-02-01 at 00:00. (Thanks to Steffen
+Thorsen.)
+
+---
+
+# Version 2020.6
+Upstream version 2020f released 2020-12-29T08:17:46+00:00
+
+## Change to build procedure
+
+'make rearguard_tarballs' no longer generates a bad rearguard.zi, fixing a 2020e
+bug.  (Problem reported by Deborah Goldsmith.)
+
+---
+
 # Version 2020.5
 Upstream version 2020e released 2020-12-22T23:14:34+00:00
 
@@ -44,6 +64,7 @@ Time with US DST in 2018, rather than as maintaining EDT until 2015-11-01.
 
 The zic man page now documents zic's coalescing of transitions when a zone falls
 back just before DST springs forward.
+
 
 ---
 
