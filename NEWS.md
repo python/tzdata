@@ -1,3 +1,20 @@
+# Version 2021.2
+Upstream version 2021b released 2021-09-24T23:23:00+00:00
+
+## Briefly:
+
+This is an intermediate release that cherry-picks only the changes to Jordan and
+Samoa's DST. It will not match upstream 2021b, which includes many other
+changes.
+
+## Changes to future timestamps
+
+Jordan now starts DST on February's last Thursday. (Thanks to Steffen Thorsen.)
+
+Samoa no longer observes DST.  (Thanks to Geoffrey D. Bennett.)
+
+---
+
 # Version 2021.1
 Upstream version 2021a released 2021-01-24T18:54:57+00:00
 
