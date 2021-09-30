@@ -7,6 +7,7 @@ import pathlib
 import re
 import shutil
 import subprocess
+import sys
 import tarfile
 import tempfile
 import textwrap
@@ -58,6 +59,37 @@ def download_tzdb_tarballs(
             f.write(r.content)
 
     return download_locations
+
+
+def retrieve_local_tarballs(
+    version: str, source_dir: pathlib.Path, working_dir: pathlib.Path = WORKING_DIR
+) -> typing.List[pathlib.Path]:
+    """Retrieve the tzdata and tzcode tarballs from a folder.
+
+    This is useful when building against a local, patched version of tzdb.
+    """
+    tzdata_file = f"tzdata{version}.tar.gz"
+    tzcode_file = f"tzcode{version}.tar.gz"
+
+    target_dir = working_dir / version / "download"
+
+    # mkdir -p target_dir
+    target_dir.mkdir(parents=True, exist_ok=True)
+
+    dest_locations = []
+
+    for filename in [tzdata_file, tzcode_file]:
+        source_location = source_dir / filename
+        dest_location = target_dir / filename
+
+        if dest_location.exists():
+            logging.info("File %s exists, overwriting", dest_location)
+
+        shutil.copy(source_location, dest_location)
+
+        dest_locations.append(dest_location)
+
+    return dest_locations
 
 
 def unpack_tzdb_tarballs(download_locations: typing.List[pathlib.Path]) -> pathlib.Path:
@@ -382,16 +414,39 @@ def update_news(news_entry: NewsEntry):
     "--version", "-v", default=None, help="The version of the tzdata file to download"
 )
 @click.option(
+    "--source-dir",
+    "-s",
+    default=None,
+    help="A local source directory containing tarballs (must be used together with --version)",
+    type=click.Path(
+        exists=True, file_okay=False, dir_okay=True, path_type=pathlib.Path
+    ),  # type: ignore
+)
+@click.option(
     "--news-only/--no-news-only",
     help="Flag to disable data updates and only update the news entry",
 )
-def main(version: str, news_only: bool):
+def main(
+    version: typing.Optional[str],
+    news_only: bool,
+    source_dir: typing.Optional[pathlib.Path],
+):
     logging.basicConfig(level=logging.INFO)
 
-    if version is None:
-        version = find_latest_version()
+    if source_dir is not None:
+        if version is None:
+            logging.error(
+                "--source-dir specified without --version: "
+                "If using --source-dir, --version must also be used."
+            )
+            sys.exit(-1)
+        download_locations = retrieve_local_tarballs(version, source_dir)
+    else:
+        if version is None:
+            version = find_latest_version()
 
-    download_locations = download_tzdb_tarballs(version)
+        download_locations = download_tzdb_tarballs(version)
+
     tzdb_location = unpack_tzdb_tarballs(download_locations)
 
     # Update the news entry
