@@ -1,4 +1,4 @@
-# version 2021a
+# version 2021b
 # This zic input file is in the public domain.
 R d 1916 o - Jun 14 23s 1 S
 R d 1916 1919 - O Su>=1 23s 0 -
@@ -916,8 +916,9 @@ R J 2004 o - O 15 0s 0 -
 R J 2005 o - S lastF 0s 0 -
 R J 2006 2011 - O lastF 0s 0 -
 R J 2013 o - D 20 0 0 -
-R J 2014 ma - Mar lastTh 24 1 S
+R J 2014 2021 - Mar lastTh 24 1 S
 R J 2014 ma - O lastF 0s 0 -
+R J 2022 ma - F lastTh 24 1 S
 Z Asia/Amman 2:23:44 - LMT 1931
 2 J EE%sT
 Z Asia/Almaty 5:7:48 - LMT 1924 May 2
@@ -1596,8 +1597,8 @@ L Pacific/Pago_Pago Pacific/Midway
 R WS 2010 o - S lastSu 0 1 -
 R WS 2011 o - Ap Sa>=1 4 0 -
 R WS 2011 o - S lastSa 3 1 -
-R WS 2012 ma - Ap Su>=1 4 0 -
-R WS 2012 ma - S lastSu 3 1 -
+R WS 2012 2021 - Ap Su>=1 4 0 -
+R WS 2012 2020 - S lastSu 3 1 -
 Z Pacific/Apia 12:33:4 - LMT 1892 Jul 5
 -11:26:56 - LMT 1911
 -11:30 - -1130 1950
