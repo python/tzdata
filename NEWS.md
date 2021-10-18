@@ -1,3 +1,33 @@
+# Version 2021.3
+Upstream version 2021c released 2021-10-01T21:21:49+00:00
+
+## Briefly:
+
+Revert most 2021b changes to 'backward'. Fix 'zic -b fat' bug in pre-1970 32-bit
+data. Fix two Link line typos. Distribute SECURITY file.
+
+This release is intended as a bugfix release, to fix compatibility problems and
+typos reported since 2021b was released.
+
+## Changes to Link directives
+
+Revert almost all of 2021b's changes to the 'backward' file, by moving Link
+directives back to where they were in 2021a. Although 'zic' doesn't care which
+source file contains a Link directive, some downstream uses ran into trouble
+with the move. (Problem reported by Stephen Colebourne for Joda-Time.)
+
+Fix typo that linked Atlantic/Jan_Mayen to the wrong location (problem reported
+by Chris Walton).
+
+Fix 'backzone' typo that linked America/Virgin to the wrong location (problem
+reported by Michael Deckers).
+
+## Changes to documentation
+
+Distribute the SECURITY file (problem reported by Andreas Radke).
+
+---
+
 # Version 2021.2.post0
 Upstream version 2021b released 2021-09-24T23:23:00+00:00
 
@@ -75,6 +105,7 @@ Antarctica/Syowa.
 
 tzfile.5 better matches a draft successor to RFC 8536
 <https://datatracker.ietf.org/doc/draft-murchison-rfc8536bis/01/>.
+
 
 ---
 
