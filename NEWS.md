@@ -1,3 +1,18 @@
+# Version 2021.4
+Upstream version 2021d released 2021-10-15T20:48:18+00:00
+
+## Briefly:
+
+Fiji suspends DST for the 2021/2022 season. 'zic -r' marks unspecified
+timestamps with "-00".
+
+## Changes to future timestamps
+
+Fiji will suspend observance of DST for the 2021/2022 season. Assume for now
+that it will return next year.  (Thanks to Jashneel Kumar and P Chan.)
+
+---
+
 # Version 2021.3
 Upstream version 2021c released 2021-10-01T21:21:49+00:00
 
