@@ -1,3 +1,13 @@
+# Version 2021.5
+Upstream version 2021e released 2021-10-22T01:41:00+00:00
+
+## Changes to future timestamps
+
+Palestine will fall back 10-29 (not 10-30) at 01:00. (Thanks to P Chan and Heba
+Hemad.)
+
+---
+
 # Version 2021.4
 Upstream version 2021d released 2021-10-15T20:48:18+00:00
 
