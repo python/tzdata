@@ -3,5 +3,5 @@ set -e
 VERSION=$(<VERSION)
 
 echo "Tagging version $VERSION"
-git tag -s -m "Version $VERSION" $VERSION || exit "Failed to tag!"
+git tag -m "Version $VERSION" $VERSION || exit "Failed to tag!"
 echo "Success"
