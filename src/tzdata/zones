@@ -276,8 +276,6 @@ Europe/Vaduz
 Europe/Istanbul
 Asia/Istanbul
 Europe/Kyiv
-Europe/Uzhgorod
-Europe/Zaporozhye
 EST
 MST
 HST
@@ -544,6 +542,8 @@ Etc/UCT
 Europe/Belfast
 Europe/Kiev
 Europe/Tiraspol
+Europe/Uzhgorod
+Europe/Zaporozhye
 GB
 GB-Eire
 GMT+0
