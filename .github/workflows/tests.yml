@@ -14,9 +14,9 @@ jobs:
       TOXENV: py
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: ${{ matrix.python-version }} - ${{ matrix.os }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
@@ -36,9 +36,9 @@ jobs:
       TOXENV: ${{ matrix.toxenv }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: ${{ matrix.toxenv }}
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v4
         with:
           python-version: 3.8
       - name: Install tox
