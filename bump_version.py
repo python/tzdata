@@ -65,6 +65,8 @@ def bump_version(version: parver.Version, args) -> parver.Version:
         else:
             return version.bump_pre("rc")
 
+    return version
+
 
 def main(args):
     original_version = get_current_version()

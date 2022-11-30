@@ -11,7 +11,7 @@ import sys
 import tarfile
 import tempfile
 import textwrap
-import typing
+from collections.abc import Iterable, Iterator, Mapping, Sequence
 from datetime import datetime, timezone
 
 import click
@@ -33,7 +33,7 @@ SKIP_NEWS_HEADINGS = {
 
 def download_tzdb_tarballs(
     version: str, base_url: str = SOURCE, working_dir: pathlib.Path = WORKING_DIR
-) -> typing.List[pathlib.Path]:
+) -> Sequence[pathlib.Path]:
     """Download the tzdata and tzcode tarballs."""
     tzdata_file = f"tzdata{version}.tar.gz"
     tzcode_file = f"tzcode{version}.tar.gz"
@@ -63,7 +63,7 @@ def download_tzdb_tarballs(
 
 def retrieve_local_tarballs(
     version: str, source_dir: pathlib.Path, working_dir: pathlib.Path = WORKING_DIR
-) -> typing.List[pathlib.Path]:
+) -> Sequence[pathlib.Path]:
     """Retrieve the tzdata and tzcode tarballs from a folder.
 
     This is useful when building against a local, patched version of tzdb.
@@ -92,7 +92,9 @@ def retrieve_local_tarballs(
     return dest_locations
 
 
-def unpack_tzdb_tarballs(download_locations: typing.List[pathlib.Path]) -> pathlib.Path:
+def unpack_tzdb_tarballs(
+    download_locations: Sequence[pathlib.Path],
+) -> pathlib.Path:
     assert len(download_locations) == 2
     assert download_locations[0].parent == download_locations[1].parent
     base_dir = download_locations[0].parent.parent
@@ -117,7 +119,7 @@ def unpack_tzdb_tarballs(download_locations: typing.List[pathlib.Path]) -> pathl
 
 def load_zonefiles(
     base_dir: pathlib.Path,
-) -> typing.Tuple[typing.List[str], pathlib.Path]:
+) -> tuple[Sequence[str], pathlib.Path]:
     target_dir = base_dir.parent / "zoneinfo"
     if target_dir.exists():
         shutil.rmtree(target_dir)
@@ -144,9 +146,7 @@ def load_zonefiles(
     return zonenames, target_dir
 
 
-def create_package(
-    version: str, zonenames: typing.List[str], zoneinfo_dir: pathlib.Path
-):
+def create_package(version: str, zonenames: Sequence[str], zoneinfo_dir: pathlib.Path):
     """Creates the tzdata package."""
     # Start out at rc0
     base_version = parver.Version.parse(translate_version(version))
@@ -249,7 +249,7 @@ def translate_version(iana_version: str) -> str:
 class NewsEntry:
     version: str
     release_date: datetime
-    categories: typing.Mapping[str, str]
+    categories: Mapping[str, str]
 
     def to_file(self) -> None:
         fpath = pathlib.Path("news.d") / (self.version + ".md")
@@ -286,8 +286,8 @@ def get_indent(s: str) -> int:
 
 
 def read_block(
-    lines: typing.Iterator[str],
-) -> typing.Tuple[typing.Sequence[str], typing.Iterator[str]]:
+    lines: Iterator[str],
+) -> tuple[Sequence[str], Iterator[str]]:
     lines, peek = itertools.tee(lines)
     while not (first_line := next(peek)):
         next(lines)
@@ -322,7 +322,7 @@ def read_block(
     return block, lines
 
 
-def parse_categories(news_block: typing.Sequence[str]) -> typing.Mapping[str, str]:
+def parse_categories(news_block: Sequence[str]) -> Mapping[str, str]:
     blocks = iter(news_block)
 
     output = {}
@@ -341,7 +341,7 @@ def parse_categories(news_block: typing.Sequence[str]) -> typing.Mapping[str, st
 
         # Merge the contents into paragraphs by grouping into consecutive blocks
         # of non-empty lines, then joining those lines on a newline.
-        content_paragraphs: typing.Iterable[str] = (
+        content_paragraphs: Iterable[str] = (
             "\n".join(paragraph)
             for _, paragraph in itertools.groupby(content_lines, key=bool)
         )
@@ -365,7 +365,7 @@ def parse_categories(news_block: typing.Sequence[str]) -> typing.Mapping[str, st
     return output
 
 
-def read_news(tzdb_loc: pathlib.Path, version: str = None) -> NewsEntry:
+def read_news(tzdb_loc: pathlib.Path, version: str | None = None) -> NewsEntry:
     release_re = re.compile("^Release (?P<version>\d{4}[a-z]) - (?P<date>.*$)")
     with open(tzdb_loc / "NEWS", "rt") as f:
         f_lines = map(str.rstrip, f)
@@ -427,9 +427,9 @@ def update_news(news_entry: NewsEntry):
     help="Flag to disable data updates and only update the news entry",
 )
 def main(
-    version: typing.Optional[str],
+    version: str | None,
     news_only: bool,
-    source_dir: typing.Optional[pathlib.Path],
+    source_dir: pathlib.Path | None,
 ):
     logging.basicConfig(level=logging.INFO)
 
