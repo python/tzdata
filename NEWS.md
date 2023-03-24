@@ -1,3 +1,17 @@
+# Version 2023.2
+Upstream version 2023b released 2023-03-24T02:50:38+00:00
+
+## Briefly:
+
+Lebanon delays the start of DST this year.
+
+## Changes to future timestamps
+
+This year Lebanon springs forward April 20/21 not March 25/26. (Thanks to
+Saadallah Itani.)
+
+---
+
 # Version 2023.1
 Upstream version 2023a released 2023-03-22T19:39:33+00:00
 
