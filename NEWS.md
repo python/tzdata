@@ -1,3 +1,13 @@
+# Version 2023.3
+Upstream version 2023c released 2023-03-28T19:42:14+00:00
+
+## Changes to past and future timestamps
+
+Model Lebanon's DST chaos by reverting data to tzdb 2023a. (Thanks to Rany Hany
+for the heads-up.)
+
+---
+
 # Version 2023.2
 Upstream version 2023b released 2023-03-24T02:50:38+00:00
 
