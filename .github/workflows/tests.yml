@@ -13,12 +13,12 @@ jobs:
         os: ["ubuntu-latest", "windows-latest", "macos-latest"]
         exclude:
           - python-version: "2.7"
-            os: "ubuntu-latest"
+            os: "windows-latest"
+          - python-version: "2.7"
+            os: "macos-latest"
           - python-version: "3.6"
             os: "ubuntu-latest"
         include:
-          - python-version: "2.7"
-            os: "ubuntu-20.04"
           - python-version: "3.6"
             os: "ubuntu-20.04"
     env:
@@ -26,7 +26,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: ${{ matrix.python-version }} - ${{ matrix.os }}
+    - if: ${{ matrix.python-version == '2.7' }}
+      run: |
+        sudo apt-get install python-is-python2
+        curl -sSL https://bootstrap.pypa.io/pip/2.7/get-pip.py -o get-pip.py
+        python get-pip.py
+    - if: ${{ matrix.python-version != '2.7' }}
+      name: ${{ matrix.python-version }} - ${{ matrix.os }}
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
