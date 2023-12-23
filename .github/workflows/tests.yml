@@ -16,9 +16,13 @@ jobs:
             os: "windows-latest"
           - python-version: "2.7"
             os: "macos-latest"
+          - python-version: "2.7"
+            os: "ubuntu-latest"
           - python-version: "3.6"
             os: "ubuntu-latest"
         include:
+          - python-version: "2.7"
+            os: "ubuntu-20.04"
           - python-version: "3.6"
             os: "ubuntu-20.04"
     env:
