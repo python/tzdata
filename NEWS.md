@@ -1,3 +1,42 @@
+# Version 2024.1
+Upstream version 2024a released 2024-02-01T17:28:56+00:00
+
+## Briefly:
+
+Kazakhstan unifies on UTC+5 beginning 2024-03-01. Palestine springs forward a
+week later after Ramadan. zic no longer pretends to support indefinite-past DST.
+localtime no longer mishandles Ciudad Juárez in 2422.
+
+## Changes to future timestamps
+
+Kazakhstan unifies on UTC+5.  This affects Asia/Almaty and Asia/Qostanay which
+together represent the eastern portion of the country that will transition from
+UTC+6 on 2024-03-01 at 00:00 to join the western portion.  (Thanks to Zhanbolat
+Raimbekov.)
+
+Palestine springs forward a week later than previously predicted in 2024 and
+2025.  (Thanks to Heba Hamad.)  Change spring-forward predictions to the second
+Saturday after Ramadan, not the first; this also affects other predictions
+starting in 2039.
+
+## Changes to past timestamps
+
+Asia/Ho_Chi_Minh's 1955-07-01 transition occurred at 01:00 not 00:00.  (Thanks
+to Đoàn Trần Công Danh.)
+
+From 1947 through 1949, Toronto's transitions occurred at 02:00 not 00:00.
+(Thanks to Chris Walton.)
+
+In 1911 Miquelon adopted standard time on June 15, not May 15.
+
+## Changes to documentation
+
+The strftime man page documents which struct tm members affect which conversion
+specs, and that tzset is called.  (Problems reported by Robert Elz and Steve
+Summit.)
+
+---
+
 # Version 2023.4
 Upstream version 2023d released 2023-12-22T04:02:24+00:00
 
