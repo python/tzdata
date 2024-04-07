@@ -29,7 +29,7 @@ jobs:
       TOXENV: py
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - if: ${{ matrix.python-version == '2.7' }}
       run: |
         sudo apt-get install python-is-python2
@@ -37,7 +37,7 @@ jobs:
         python get-pip.py
     - if: ${{ matrix.python-version != '2.7' }}
       name: ${{ matrix.python-version }} - ${{ matrix.os }}
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
         allow-prereleases: true
@@ -58,9 +58,9 @@ jobs:
       TOXENV: ${{ matrix.toxenv }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: ${{ matrix.toxenv }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.x"
       - name: Install tox
