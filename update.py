@@ -129,7 +129,7 @@ def load_zonefiles(
 
         # First run the makefile, which does all kinds of other random stuff
         subprocess.run(
-            ["make", f"DESTDIR={td}", "POSIXRULES=", "ZFLAGS=-b slim", "install"],
+            ["make", f"DESTDIR={td}", "POSIXRULES=", "ZFLAGS=-b fat", "install"],
             cwd=base_dir,
             check=True,
         )
@@ -178,6 +178,9 @@ def create_package(version: str, zonenames: Sequence[str], zoneinfo_dir: pathlib
     # Generate the "zones" file as a newline-delimited list
     with open(target_dir / "zones", "w") as f:
         f.write("\n".join(zonenames))
+
+    archive_name = os.path.join(target_dir, "zonetimeinfo")
+    shutil.make_archive(archive_name, "zip", data_dir)
 
     # Now recursively create __init__.py files in every directory we need to
     for dirpath, _, filenames in os.walk(data_dir):
