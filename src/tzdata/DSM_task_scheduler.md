@@ -15,7 +15,7 @@ Then setup a DSM task schedule in `Task Scheduler` to execute the bash file to u
 
 
 Note: If you edit the script on Windows the script may fail.  
-To fix this you need proper EOL configuration
+To fix this you need proper EOL configuration  
 &nbsp;&nbsp;&nbsp;&nbsp;Open your shell file on NotePad++  
 &nbsp;&nbsp;&nbsp;&nbsp;Click on Edit on Top bar menu, then choose EOL Conversion --> Unix(LF)  
 &nbsp;&nbsp;&nbsp;&nbsp;Now copy this file in your Linux system and it should run without errors.  
