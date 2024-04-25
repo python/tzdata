@@ -1,7 +1,7 @@
 Config the DSM Scheduler
 ====================================================
 
-This is to get the files into the right place.
+This is to get updated tzdata with RegionCity files into the right place.  
 Copy the `ZoneInfoDSM.sh` and `zonetimeinfo.zip` to a folder on your DSM.  
 
 Edit the folder location in `ZoneInfoDSM.sh` to match where you saved the `zonetimeinfo.zip`.  
