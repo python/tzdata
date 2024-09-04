@@ -11,7 +11,7 @@ Then setup a DSM task schedule in `Task Scheduler` to execute the bash file to u
 3. Got to `Task Settings` and in user script are put  
   ```/bin/bash /volume1/Media/script/ZoneInfoSC.sh > /volume1/Media/script/zoneinfo.log```
 4. OK and confirm with root password.
-5. Select the new task and clic run to execute.
+5. Select the new task and click run to execute.
 
 
 Note: If you edit the script on Windows the script may fail.  
