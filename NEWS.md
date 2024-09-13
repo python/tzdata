@@ -1,3 +1,80 @@
+# Version 2024.2
+Upstream version 2024b released 2024-09-04T19:27:47+00:00
+
+## Briefly:
+
+Improve historical data for Mexico, Mongolia, and Portugal. System V names are
+now obsolescent. The main data form now uses %z. The code now conforms to RFC
+8536 for early timestamps. Support POSIX.1-2024, which removes asctime_r and
+ctime_r. Assume POSIX.2-1992 or later for shell scripts. SUPPORT_C89 now
+defaults to 1.
+
+## Changes to past timestamps
+
+Asia/Choibalsan is now an alias for Asia/Ulaanbaatar rather than being a
+separate Zone with differing behavior before April 2008. This seems better given
+our wildly conflicting information about Mongolia's time zone history.  (Thanks
+to Heitor David Pinto.)
+
+Historical transitions for Mexico have been updated based on official Mexican
+decrees.  The affected timestamps occur during the years 1921-1927, 1931, 1945,
+1949-1970, and 1981-1997. The affected zones are America/Bahia_Banderas,
+America/Cancun, America/Chihuahua, America/Ciudad_Juarez, America/Hermosillo,
+America/Mazatlan, America/Merida, America/Mexico_City, America/Monterrey,
+America/Ojinaga, and America/Tijuana. (Thanks to Heitor David Pinto.)
+
+Historical transitions for Portugal, represented by Europe/Lisbon,
+Atlantic/Azores, and Atlantic/Madeira, have been updated based on a close
+reading of old Portuguese legislation, replacing previous data mainly
+originating from Whitman and Shanks & Pottenger.  These changes affect a few
+transitions in 1917-1921, 1924, and 1940 throughout these regions by a few hours
+or days, and various timestamps between 1977 and 1993 depending on the region.
+In particular, the Azores and Madeira did not observe DST from 1977 to 1981.
+Additionally, the adoption of standard zonal time in former Portuguese colonies
+have been adjusted: Africa/Maputo in 1909, and Asia/Dili by 22 minutes at the
+start of 1912. (Thanks to Tim Parenti.)
+
+## Changes to past tm_isdst flags
+
+The period from 1966-04-03 through 1966-10-02 in Portugal is now modeled as DST,
+to more closely reflect how contemporaneous changes in law entered into force.
+
+## Changes to data
+
+Names present only for compatibility with UNIX System V (last released in the
+1990s) have been moved to 'backward'. These names, which for post-1970
+timestamps mostly just duplicate data of geographical names, were confusing
+downstream uses. Names moved to 'backward' are now links to geographical names.
+This affects behavior for TZ='EET' for some pre-1981 timestamps, for TZ='CET'
+for some pre-1947 timestamps, and for TZ='WET' for some pre-1996 timestamps.
+Also, TZ='MET' now behaves like TZ='CET' and so uses the abbreviation "CET"
+rather than "MET". Those needing the previous TZDB behavior, which does not
+match any real-world clocks, can find the old entries in 'backzone'. (Problem
+reported by Justin Grant.)
+
+The main source files' time zone abbreviations now use %z, supported by zic
+since release 2015f and used in vanguard form since release 2022b.  For example,
+America/Sao_Paulo now contains the zone continuation line "-3:00 Brazil %z",
+which is less error prone than the old "-3:00 Brazil -03/-02".  This does not
+change the represented data: the generated TZif files are unchanged. Rearguard
+form still avoids %z, to support obsolescent parsers.
+
+Asia/Almaty has been removed from zonenow.tab as it now agrees with
+Asia/Tashkent for future timestamps, due to Kazakhstan's 2024-02-29 time zone
+change.  Similarly, America/Scoresbysund has been removed, as it now agrees with
+America/Nuuk due to its 2024-03-31 time zone change.
+
+## Changes to documentation
+
+The documentation now reflects POSIX.1-2024.
+
+## Changes to commentary
+
+Commentary about historical transitions in Portugal and her former colonies has
+been expanded with links to many relevant legislation. (Thanks to Tim Parenti.)
+
+---
+
 # Version 2024.1
 Upstream version 2024a released 2024-02-01T17:28:56+00:00
 
