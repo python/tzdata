@@ -1,0 +1,109 @@
+name: Check for tzdata updates
+
+on:
+  schedule:
+    - cron: '0 9 * * *'  # Runs daily at 9AM UTC
+
+jobs:
+  check-pr-exists:
+    runs-on: ubuntu-latest
+    outputs:
+      pr_exists: ${{ steps.check_pr_exists.outputs.pr_exists }}
+    steps:
+      - name: Check if PR already exists
+        id: check_pr_exists
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_EXISTS=$(gh pr --repo $GITHUB_REPOSITORY \
+                      list --search "Update tzdata to version" \
+                      --json number --jq '.[] | .number')
+          if [ -n "$PR_EXISTS" ]; then
+            echo "A PR updating the tzdata version already exists: https://github.com/python/tzdata/pulls/${PR_EXISTS}"
+            echo "::set-output name=pr_exists::true"
+            exit 0
+          else
+            echo "::set-output name=pr_exists::false"
+          fi
+
+  check-for-updates:
+    runs-on: ubuntu-latest
+    needs: check-pr-exists
+    if: needs.check-pr-exists.outputs.pr_exists == 'false'  # Run only if no PR exists
+    outputs:
+      changes_detected: ${{ steps.check_changes.outputs.changes_detected }}
+    steps:
+      - name: Check out repository (shallow)
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1  # Shallow clone to save time
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install tox
+          sudo apt-get install gh
+
+      - name: Run tox update
+        run: tox -e update
+
+      - name: Check for repository changes and commit
+        id: check_changes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+
+          # Check for changes
+          if git diff --quiet; then
+            echo "No changes detected."
+            echo "::set-output name=changes_detected::false"
+            exit 0
+          fi
+
+          # Check for changes in the news.d directory
+          git add -A
+          news_files=$(git diff --cached --name-only --diff-filter=A | grep '^news.d/.*\.md' || true)
+
+          if [ -z "$news_files" ]; then
+            echo "No new file in news.d, failing the job."
+            exit 1
+          fi
+
+          if [ $(echo "$news_files" | wc -l) -ne 1 ]; then
+            echo "More than one new file added in news.d, failing the job."
+            exit 1
+          fi
+
+          # Extract TZDATA_VERSION from filename
+          TZDATA_VERSION=$(basename "$news_files" .md)
+
+          # Extract TZDATA_NEWS from file content
+          TZDATA_NEWS=$(cat "$news_files")
+
+          echo "TZDATA_VERSION=$TZDATA_VERSION" >> $GITHUB_ENV
+          echo "TZDATA_NEWS=$TZDATA_NEWS" >> $GITHUB_ENV
+
+          git commit -m "Update tzdata to version $TZDATA_VERSION"
+
+          echo "::set-output name=changes_detected::true"
+
+  create-pr:
+    runs-on: ubuntu-latest
+    needs: check-for-updates
+    if: needs.check-for-updates.outputs.changes_detected == 'true'  # Run only if changes are detected
+    steps:
+      - name: Create pull request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr create --title "Update tzdata to version $TZDATA_VERSION" \
+            --body "$TZDATA_NEWS" \
+            --base main \
+            --head $(git rev-parse --abbrev-ref HEAD) \
+            --label "automatic-updates"
