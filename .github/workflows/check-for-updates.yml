@@ -3,6 +3,7 @@ name: Check for tzdata updates
 on:
   schedule:
     - cron: '0 9 * * *'  # Runs daily at 9AM UTC
+  workflow_dispatch:
 
 jobs:
   check-pr-exists:
