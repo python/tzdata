@@ -51,7 +51,7 @@ jobs:
           sudo apt-get install gh
 
       - name: Run tox update
-        run: tox -e update
+        run: tox -e update -- --no-skip-existing
 
       - name: Check for repository changes and commit
         id: check_changes
