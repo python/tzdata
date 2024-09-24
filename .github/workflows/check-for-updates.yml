@@ -68,6 +68,8 @@ jobs:
             exit 0
           fi
 
+          echo "Test" > news.d/2024c.md
+
           # Check for changes in the news.d directory
           git add -A
           news_files=$(git diff --cached --name-only --diff-filter=A | grep '^news.d/.*\.md' || true)
