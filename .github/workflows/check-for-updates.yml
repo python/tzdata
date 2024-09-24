@@ -81,6 +81,7 @@ jobs:
             echo "More than one new file added in news.d, failing the job."
             exit 1
           fi
+          echo "::set-output name=changes_detected::true"
 
           # Extract TZDATA_VERSION from filename
           TZDATA_VERSION=$(basename "$news_files" .md)
@@ -97,7 +98,6 @@ jobs:
         run: |
           git commit -m "Update tzdata to version $TZDATA_VERSION" \
                      -m "$TZDATA_NEWS"
-          echo "::set-output name=changes_detected::true"
 
       - name: Create pull request
         env:
