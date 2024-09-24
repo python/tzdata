@@ -31,6 +31,8 @@ jobs:
   check-for-updates:
     runs-on: ubuntu-latest
     needs: check-pr-exists
+    permissions:
+      pull-requests: write
     if: needs.check-pr-exists.outputs.pr_exists == 'false'  # Run only if no PR exists
     outputs:
       changes_detected: ${{ steps.check_changes.outputs.changes_detected }}
