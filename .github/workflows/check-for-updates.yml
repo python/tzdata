@@ -91,14 +91,6 @@ jobs:
           echo "TZDATA_VERSION=$TZDATA_VERSION" >> $GITHUB_ENV
           echo "TZDATA_NEWS=$TZDATA_NEWS" >> $GITHUB_ENV
 
-
-      - name: Check for repository changes and commit
-        id: commit_changes
-        if: steps.check_changes.outputs.changes_detected == 'true'
-        run: |
-          git commit -m "Update tzdata to version $TZDATA_VERSION"
-          echo "::set-output name=changes_detected::true"
-
       - name: Create PR
         id: commit_changes
         if: steps.check_changes.outputs.changes_detected == 'true'
