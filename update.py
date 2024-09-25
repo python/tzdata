@@ -186,6 +186,15 @@ def create_package(version: str, zonenames: Sequence[str], zoneinfo_dir: pathlib
             init_file.touch()
 
 
+def get_current_package_version() -> str:
+    with open(PKG_BASE / "tzdata/__init__.py", "rt") as f:
+        for line in f:
+            if line.startswith("IANA_VERSION"):
+                return line.split("=", 1)[1].strip(' "\n')
+
+    raise ValueError("IANA version not found!")
+
+
 def find_latest_version() -> str:
     r = requests.get(IANA_LATEST_LOCATION)
     fobj = io.BytesIO(r.content)
@@ -426,27 +435,54 @@ def update_news(news_entry: NewsEntry):
     "--news-only/--no-news-only",
     help="Flag to disable data updates and only update the news entry",
 )
+@click.option(
+    "--skip-existing/--no-skip-existing",
+    default=True,
+    help="Whether to skip the update if we're already at the current value.",
+)
 def main(
     version: str | None,
     news_only: bool,
+    skip_existing: bool,
     source_dir: pathlib.Path | None,
 ):
     logging.basicConfig(level=logging.INFO)
 
-    if source_dir is not None:
-        if version is None:
-            logging.error(
-                "--source-dir specified without --version: "
-                "If using --source-dir, --version must also be used."
-            )
-            sys.exit(-1)
-        download_locations = retrieve_local_tarballs(version, source_dir)
+    if skip_existing:
+        existing_version: str | None = get_current_package_version()
     else:
-        if version is None:
-            version = find_latest_version()
+        existing_version = None
 
-        download_locations = download_tzdb_tarballs(version)
+    if version is None or version != existing_version:
+        if source_dir is not None:
+            if version is None:
+                logging.error(
+                    "--source-dir specified without --version: "
+                    "If using --source-dir, --version must also be used."
+                )
+                sys.exit(-1)
+            download_locations: Sequence[pathlib.Path] | None = retrieve_local_tarballs(
+                version, source_dir
+            )
+        else:
+            if version is None:
+                version = find_latest_version()
 
+            if version != existing_version or not skip_existing:
+                download_locations = download_tzdb_tarballs(version)
+            else:
+                download_locations = None
+    else:
+        download_locations = None
+
+    if skip_existing and version == existing_version:
+        logging.info(
+            f"Selected version {version} is identical "
+            f"to existing version {existing_version}; nothing to do!"
+        )
+        sys.exit(0)
+
+    assert download_locations is not None
     tzdb_location = unpack_tzdb_tarballs(download_locations)
 
     # Update the news entry
