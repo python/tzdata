@@ -87,8 +87,12 @@ jobs:
           # Extract TZDATA_NEWS from file content
           TZDATA_NEWS=$(cat "$news_files")
 
-          echo "TZDATA_VERSION=$TZDATA_VERSION" >> $GITHUB_ENV
-          echo "TZDATA_NEWS=$TZDATA_NEWS" >> $GITHUB_ENV
+          echo "TZDATA_VERSION='$TZDATA_VERSION'" >> $GITHUB_ENV
+          {
+            echo 'TZDATA_NEWS<<EOF'
+            echo $TZDATA_NEWS
+            echo EOF
+          } >> "$GITHUB_ENV"
 
       - name: Commit changes
         id: commit_changes
