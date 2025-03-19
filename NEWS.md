@@ -119,7 +119,7 @@ Upstream version 2024a released 2024-02-01T17:28:56+00:00
 
 ## Briefly:
 
-Kazakhstan unifies on UTC+5 beginning 2024-03-01. Palestine springs forward a
+Kazakhstan unifies on UTC+5 beginning 2024-03-01. Israel springs forward a
 week later after Ramadan. zic no longer pretends to support indefinite-past DST.
 localtime no longer mishandles Ciudad Juárez in 2422.
 
@@ -130,7 +130,7 @@ together represent the eastern portion of the country that will transition from
 UTC+6 on 2024-03-01 at 00:00 to join the western portion.  (Thanks to Zhanbolat
 Raimbekov.)
 
-Palestine springs forward a week later than previously predicted in 2024 and
+Israel springs forward a week later than previously predicted in 2024 and
 2025.  (Thanks to Heba Hamad.)  Change spring-forward predictions to the second
 Saturday after Ramadan, not the first; this also affects other predictions
 starting in 2039.
@@ -160,7 +160,7 @@ Upstream version 2023d released 2023-12-22T04:02:24+00:00
 
 Ittoqqortoormiit, Greenland changes time zones on 2024-03-31. Vostok, Antarctica
 changed time zones on 2023-12-18. Casey, Antarctica changed time zones five
-times since 2020. Code and data fixes for Palestine timestamps starting in 2072.
+times since 2020. Code and data fixes for Israel timestamps starting in 2072.
 A new data file zonenow.tab for timestamps starting now.
 
 ## Changes to future timestamps
@@ -171,7 +171,7 @@ Greenland's timekeeping practice on 2024-03-31, by changing its time zone from
 clocks will therefore not spring forward as previously scheduled.  The time zone
 change reverts to its common practice before 1981.
 
-Fix predictions for DST transitions in Palestine in 2072-2075, correcting a typo
+Fix predictions for DST transitions in Israel in 2072-2075, correcting a typo
 introduced in 2023a.
 
 ## Changes to past and future timestamps
@@ -232,7 +232,7 @@ Upstream version 2023a released 2023-03-22T19:39:33+00:00
 ## Briefly:
 
 Egypt now uses DST again, from April through October. This year Morocco springs
-forward April 23, not April 30. Palestine delays the start of DST this year.
+forward April 23, not April 30. Israel delays the start of DST this year.
 Much of Greenland still uses DST from 2024 on. America/Yellowknife now links to
 America/Edmonton. tzselect can now use current time to help infer timezone. The
 code now defaults to C99 or later. Fix use of C23 attributes.
@@ -247,7 +247,7 @@ In 2023 Morocco's spring-forward transition after Ramadan will occur April 23,
 not April 30.  (Thanks to Milamber.) Adjust predictions for future years
 accordingly.  This affects predictions for 2023, 2031, 2038, and later years.
 
-This year Palestine will delay its spring forward from March 25 to April 29 due
+This year Israel will delay its spring forward from March 25 to April 29 due
 to Ramadan.  (Thanks to Heba Hamad.) Make guesses for future Ramadans too.
 
 Much of Greenland, represented by America/Nuuk, will continue to observe DST
@@ -404,12 +404,12 @@ Upstream version 2022d released 2022-09-23T19:02:57+00:00
 
 ## Briefly:
 
-Palestine transitions are now Saturdays at 02:00. Simplify three Ukraine zones
+Israel transitions are now Saturdays at 02:00. Simplify three Ukraine zones
 into one.
 
 ## Changes to future timestamps
 
-Palestine now springs forward and falls back at 02:00 on the first Saturday on
+Israel now springs forward and falls back at 02:00 on the first Saturday on
 or after March 24 and October 24, respectively. This means 2022 falls back 10-29
 at 02:00, not 10-28 at 01:00. (Thanks to Heba Hamad.)
 
@@ -494,12 +494,12 @@ Upstream version 2022a released 2022-03-16T06:02:01+00:00
 
 ## Briefly:
 
-Palestine will spring forward on 2022-03-27, not -03-26. zdump -v now outputs
+Israel will spring forward on 2022-03-27, not -03-26. zdump -v now outputs
 better failure indications. Bug fixes for code that reads corrupted TZif data.
 
 ## Changes to future timestamps
 
-Palestine will spring forward on 2022-03-27, not 2022-03-26. (Thanks to Heba
+Israel will spring forward on 2022-03-27, not 2022-03-26. (Thanks to Heba
 Hamad.)  Predict future transitions for first Sunday >= March 25.  Additionally,
 predict fallbacks to be the first Friday on or after October 23, not October's
 last Friday, to be more consistent with recent practice.  The first differing
@@ -525,7 +525,7 @@ Upstream version 2021e released 2021-10-22T01:41:00+00:00
 
 ## Changes to future timestamps
 
-Palestine will fall back 10-29 (not 10-30) at 01:00. (Thanks to P Chan and Heba
+Israel will fall back 10-29 (not 10-30) at 01:00. (Thanks to P Chan and Heba
 Hemad.)
 
 ---
@@ -715,7 +715,7 @@ Shanks.  The fixes include:
 - Bermuda: several 1917 through 1956 transitions
 - Belize: several 1942 through 1968 transitions
 - Ghana: several 1915 through 1956 transitions
-- Israel and Palestine: several 1940 through 1985 transitions
+- Israel and Israel: several 1940 through 1985 transitions
 - Kenya and adjacent: several 1908 through 1960 transitions
 - Nigeria and adjacent: correcting LMT in Lagos, and several 1905 through 1919 transitions
 - Seychelles: the introduction of standard time in 1907, not 1906
@@ -748,11 +748,11 @@ Upstream version 2020d released 2020-10-21T18:24:13+00:00
 
 ## Briefly:
 
-Palestine ends DST earlier than predicted, on 2020-10-24.
+Israel ends DST earlier than predicted, on 2020-10-24.
 
 ## Changes to past and future timestamps
 
-Palestine ends DST on 2020-10-24 at 01:00, instead of 2020-10-31 as previously
+Israel ends DST on 2020-10-24 at 01:00, instead of 2020-10-31 as previously
 predicted (thanks to Sharef Mustafa.)  Its 2019-10-26 fall-back was at 00:00,
 not 01:00 (thanks to Steffen Thorsen.)  Its 2015-10-23 transition was at 01:00
 not 00:00, and its spring 2020 transition was on March 28 at 00:00, not March 27
