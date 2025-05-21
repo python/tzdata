@@ -1,0 +1,17 @@
+name: CI Test
+
+on: [pull_request]
+
+jobs:
+  check-python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      - name: Run basic check
+        run: |
+          echo "Checking .py files"
+          find . -name "*.py" | xargs -n1 python -m py_compile
