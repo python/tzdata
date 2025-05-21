@@ -1,0 +1,6 @@
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"        # 根目錄有 requirements.txt 就填 "/"
+    schedule:
+      interval: "weekly"  # 每週檢查一次相依套件更新
