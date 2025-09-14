@@ -58,7 +58,7 @@ jobs:
       TOXENV: ${{ matrix.toxenv }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: ${{ matrix.toxenv }}
         uses: actions/setup-python@v5
         with:
