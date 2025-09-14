@@ -4,8 +4,6 @@
 # list see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
-import sphinx_bootstrap_theme
-
 import tzdata
 
 # -- Project information -----------------------------------------------------
@@ -37,11 +35,7 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = "bootstrap"
-html_theme_path = sphinx_bootstrap_theme.get_html_theme_path()
-html_theme_options = {
-    "bootswatch_theme": "cosmo",
-}
+html_theme = "furo"
 
 # For cross-links to other documentation
 intersphinx_mapping = {
