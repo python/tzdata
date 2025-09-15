@@ -47,6 +47,9 @@ jobs:
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         repository-url: https://test.pypi.org/legacy/
+        verbose: true
     - name: Publish package
       if: github.event_name == 'release'
       uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        verbose: true
