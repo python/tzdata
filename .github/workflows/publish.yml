@@ -35,7 +35,7 @@ jobs:
         pip install -U tox
     - name: Create tox environments
       run: |
-        tox -p -e py,build,release --notest
+        tox -p -e py,build --notest
     - name: Run tests
       run: |
         tox -e py
