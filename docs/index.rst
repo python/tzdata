@@ -114,6 +114,12 @@ to package names:
 .. _importlib_resources: https://importlib-resources.readthedocs.io/en/latest/
 .. _zoneinfo: https://docs.python.org/3/library/zoneinfo.html
 
+.. toctree::
+   :maxdepth: 1
+   :caption: Contents:
+
+   maintaining
+
 
 Indices and tables
 ==================
