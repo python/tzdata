@@ -5,7 +5,7 @@ updates:
     schedule:
       interval: monthly
     assignees:
-      - "StanFromIreland"
+      - "@python/tzdata-maintainers"
     groups:
       actions:
         patterns:
