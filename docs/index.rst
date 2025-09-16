@@ -18,10 +18,8 @@ its backport `importlib_resources`_). Although ``importlib.resources`` or
 equivalent is recommended, it is also possible to access the data via
 :func:`pkgutil.get_data` as well.
 
-.. TODO: Change ``zoneinfo`` to :mod:`zoneinfo` when 3.9 is released
-
-It is primarily intended to be used by standard library's ``zoneinfo``
-module (new in Python 3.9), but it is also available as a source for time zone
+It is primarily intended to be used by standard library's :mod:`zoneinfo`
+module, but it is also available as a source for time zone
 data for other time zone libraries. It is generally recommended that any time
 zone libraries should attempt to use the system data before using the
 ``tzdata`` package, but some systems (notably Windows) do not deploy zoneinfo
