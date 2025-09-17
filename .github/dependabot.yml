@@ -4,8 +4,6 @@ updates:
     directory: "/"
     schedule:
       interval: monthly
-    assignees:
-      - "@python/tzdata-maintainers"
     groups:
       actions:
         patterns:
