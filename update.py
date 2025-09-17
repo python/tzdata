@@ -204,7 +204,7 @@ def find_latest_version() -> str:
         assert vfile is not None, "version file is not a regular file"
         version = vfile.read().decode("utf-8").strip()
 
-    assert re.match("\d{4}[a-z]$", version), version
+    assert re.match(r"\d{4}[a-z]$", version), version
 
     target_dir = WORKING_DIR / version / "download"
     target_dir.mkdir(parents=True, exist_ok=True)
@@ -375,7 +375,7 @@ def parse_categories(news_block: Sequence[str]) -> Mapping[str, str]:
 
 
 def read_news(tzdb_loc: pathlib.Path, version: str | None = None) -> NewsEntry:
-    release_re = re.compile("^Release (?P<version>\d{4}[a-z]) - (?P<date>.*$)")
+    release_re = re.compile(r"^Release (?P<version>\d{4}[a-z]) - (?P<date>.*$)")
     with open(tzdb_loc / "NEWS", "rt") as f:
         f_lines = map(str.rstrip, f)
         for line in f_lines:
