@@ -89,8 +89,8 @@ jobs:
 
           echo "TZDATA_VERSION='$TZDATA_VERSION'" >> $GITHUB_ENV
           {
-            echo 'TZDATA_NEWS<<EOF'
-            cat "$news_files"
+            echo "TZDATA_NEWS<<EOF"
+            echo "$TZDATA_NEWS"
             echo EOF
           } >> "$GITHUB_ENV"
 
@@ -100,7 +100,7 @@ jobs:
         run: |
           git checkout -b "updates/update_${TZDATA_VERSION}"
           git commit -m "Update tzdata to version $TZDATA_VERSION" \
-                     -m "$(cat $news_files)"
+                     -m "$TZDATA_NEWS"
           git push --force origin "updates/update_${TZDATA_VERSION}"
 
       - name: Create pull request
@@ -109,7 +109,7 @@ jobs:
         if: env.CHANGES_DETECTED == 'true'
         run: |
           gh pr create --title "Update tzdata to version $TZDATA_VERSION" \
-            --body "$(cat $news_files)" \
+            --body "$TZDATA_NEWS" \
             --base master \
             --head $(git rev-parse --abbrev-ref HEAD) \
             --label "automatic-updates"
