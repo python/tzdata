@@ -15,6 +15,7 @@ from collections.abc import Iterable, Iterator, Mapping, Sequence
 from datetime import datetime, timezone
 
 import click
+import gnupg
 import parver  # type: ignore
 import requests
 
@@ -37,13 +38,15 @@ def download_tzdb_tarballs(
     """Download the tzdata and tzcode tarballs."""
     tzdata_file = f"tzdata{version}.tar.gz"
     tzcode_file = f"tzcode{version}.tar.gz"
+    tzdata_file_asc = tzdata_file + ".asc"
+    tzcode_file_asc = tzcode_file + ".asc"
 
     target_dir = working_dir / version / "download"
     # mkdir -p target_dir
     target_dir.mkdir(parents=True, exist_ok=True)
 
     download_locations = []
-    for filename in [tzdata_file, tzcode_file]:
+    for filename in [tzdata_file, tzcode_file, tzdata_file_asc, tzcode_file_asc]:
         download_location = target_dir / filename
         download_locations.append(download_location)
 
@@ -57,6 +60,25 @@ def download_tzdb_tarballs(
         r = requests.get(url)
         with open(download_location, "wb") as f:
             f.write(r.content)
+
+    # Verify tarballs
+    gpg_home = tempfile.TemporaryDirectory()
+    gpg = gnupg.GPG(gnupghome=gpg_home.name)
+    gpg.recv_keys("hkps://keyserver.ubuntu.com", "ed97e90e62aa7e34")
+
+    for tar, asc in [(tzdata_file, tzdata_file_asc), (tzcode_file, tzcode_file_asc)]:
+        tar_path = target_dir / tar
+        sig_path = target_dir / asc
+
+        if not tar_path.exists() or not sig_path.exists():
+            raise FileNotFoundError(
+                f"Missing file or signature: {tar_path}, {sig_path}"
+            )
+
+        with open(sig_path, "rb") as f:
+            check = gpg.verify_file(f, str(tar_path))
+        if not check.valid:
+            raise RuntimeError(f"signature verification failed for {tar_path}")
 
     return download_locations
 
@@ -95,7 +117,7 @@ def retrieve_local_tarballs(
 def unpack_tzdb_tarballs(
     download_locations: Sequence[pathlib.Path],
 ) -> pathlib.Path:
-    assert len(download_locations) == 2
+    assert len(download_locations) == 4
     assert download_locations[0].parent == download_locations[1].parent
     base_dir = download_locations[0].parent.parent
     target_dir = base_dir / "tzdb"
@@ -107,6 +129,8 @@ def unpack_tzdb_tarballs(
     target_dir.mkdir()
 
     for tarball in download_locations:
+        if tarball.suffix == ".asc":
+            continue
         logging.info("Unpacking %s to %s", tarball, target_dir)
         subprocess.run(
             ["tar", "-xf", os.fspath(tarball.absolute())],
