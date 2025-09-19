@@ -22,7 +22,8 @@ jobs:
           VERSION=$(cat VERSION)
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
-      - name: Skip if tag already exists
+      - name: Check if tag already exists
+        id: checktag
         run: |
           if git rev-parse "v${{ steps.version.outputs.version }}" >/dev/null 2>&1; then
             echo "skip=true" >> $GITHUB_OUTPUT
