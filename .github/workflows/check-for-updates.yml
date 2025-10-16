@@ -89,8 +89,8 @@ jobs:
 
           echo "TZDATA_VERSION='$TZDATA_VERSION'" >> $GITHUB_ENV
           {
-            echo 'TZDATA_NEWS<<EOF'
-            echo $TZDATA_NEWS
+            echo "TZDATA_NEWS<<EOF"
+            echo "$TZDATA_NEWS"
             echo EOF
           } >> "$GITHUB_ENV"
 
