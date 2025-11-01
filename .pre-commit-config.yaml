@@ -1,24 +1,24 @@
 repos:
   - repo: https://github.com/psf/black
-    rev: 24.10.0
+    rev: 25.9.0
     hooks:
       - id: black
         language_version: "python3.12"
 
-  - repo: https://github.com/pre-commit/mirrors-isort
-    rev: v5.10.1
+  - repo: https://github.com/pycqa/isort
+    rev: 7.0.0
     hooks:
       - id: isort
-        additional_dependencies: [toml]
+        additional_dependencies: [ toml ]
         language_version: "python3.12"
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: trailing-whitespace
       - id: debug-statements
 
   - repo: https://github.com/asottile/setup-cfg-fmt
-    rev: v2.7.0
+    rev: v3.1.0
     hooks:
     -   id: setup-cfg-fmt
