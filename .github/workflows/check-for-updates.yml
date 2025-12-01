@@ -36,7 +36,7 @@ jobs:
     if: needs.check-pr-exists.outputs.pr_exists == 'false'  # Run only if no PR exists
     steps:
       - name: Check out repository (shallow)
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 1  # Shallow clone to save time
 

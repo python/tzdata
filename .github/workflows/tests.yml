@@ -27,7 +27,7 @@ jobs:
     container:
       image: ${{ matrix.use-container && format('python:{0}', matrix.python-version) || '' }}
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - if: ${{ !matrix.use-container }}
       name: Set up Python ${{ matrix.python-version }} on ${{ matrix.os }} (non-containers)
       uses: actions/setup-python@v6
@@ -51,7 +51,7 @@ jobs:
       TOXENV: ${{ matrix.toxenv }}
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: ${{ matrix.toxenv }}
         uses: actions/setup-python@v6
         with:
