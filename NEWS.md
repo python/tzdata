@@ -1,3 +1,27 @@
+# Version 2025.3
+Upstream version 2025c released 2025-12-10T22:42:37+00:00
+
+## Briefly:
+
+Several code changes for compatibility with FreeBSD.
+
+## Changes to past timestamps
+
+Baja California agreed with California’s DST rules in 1953 and in 1961 through
+1975, instead of observing standard time all year. (Thanks to Alois Treindl.)
+
+## Changes to commentary
+
+The leapseconds file contains commentary about the IERS and NIST last-modified
+and expiration timestamps for leap second data. (Thanks to Judah Levine.)
+
+Commentary now also uses characters from the set –‘’“”•≤ as this can be useful
+and should work with current applications.  This also affects data in
+iso3166.tab and zone1970.tab, which now contain strings like “Côte d’Ivoire”
+instead of “Côte d'Ivoire”.
+
+---
+
 # Version 2025.2
 Upstream version 2025b released 2025-03-22T20:40:46+00:00
 
