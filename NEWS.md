@@ -1,3 +1,27 @@
+# Version 2026.1
+Upstream version 2026a released 2026-03-02T06:59:49+00:00
+
+## Briefly:
+
+Moldova has used EU transition times since 2022. The "right" TZif files are no
+longer installed by default. -DTZ_RUNTIME_LEAPS=0 disables runtime support for
+leap seconds. TZif files are no longer limited to 50 bytes of abbreviations. zic
+is no longer limited to 50 leap seconds. Several integer overflow bugs have been
+fixed.
+
+## Changes to past and future timestamps
+
+Since 2022 Moldova has observed EU transition times, that is, it has sprung
+forward at 03:00, not 02:00, and has fallen back at 04:00, not 03:00.  (Thanks
+to Heitor David Pinto.)
+
+## Changes to data
+
+Remove Europe/Chisinau from zonenow.tab, as it now agrees with Europe/Athens for
+future timestamps.
+
+---
+
 # Version 2025.3
 Upstream version 2025c released 2025-12-10T22:42:37+00:00
 
