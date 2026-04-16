@@ -196,15 +196,6 @@ def create_package(version: str, zonenames: Sequence[str], zoneinfo_dir: pathlib
         with open(target_dir / "__init__.py", "w") as f_out:
             f_out.write(contents)
 
-    # Generate the SBOM from a template.
-    with open(TEMPLATES_DIR / "sbom.cdx.json.in", "r") as f_in:
-        contents = f_in.read()
-        contents = contents.replace("%%PACKAGE_VERSION%%", package_version)
-        contents = contents.replace("%%IANA_VERSION%%", version)
-
-        with open(REPO_ROOT / "sbom.cdx.json", "w") as f_out:
-            f_out.write(contents)
-
     with open(REPO_ROOT / "VERSION", "w") as f:
         f.write(package_version)
 
