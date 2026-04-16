@@ -1,17 +1,20 @@
+import os
 import re
-from pathlib import Path
 
 from setuptools import setup
 from wheel.bdist_wheel import bdist_wheel as _bdist_wheel
 
-ROOT = Path(__file__).parent
+ROOT = os.path.dirname(os.path.abspath(__file__))
 
 
 def generate_sbom():
-    version = (ROOT / "VERSION").read_text().strip()
-    init_text = (ROOT / "src" / "tzdata" / "__init__.py").read_text()
+    with open(os.path.join(ROOT, "VERSION")) as f:
+        version = f.read().strip()
+    with open(os.path.join(ROOT, "src", "tzdata", "__init__.py")) as f:
+        init_text = f.read()
     iana_version = re.search(r'IANA_VERSION\s*=\s*"([^"]+)"', init_text).group(1)
-    template = (ROOT / "templates" / "sbom.cdx.json.in").read_text()
+    with open(os.path.join(ROOT, "templates", "sbom.cdx.json.in")) as f:
+        template = f.read()
     return template.replace("%%PACKAGE_VERSION%%", version).replace(
         "%%IANA_VERSION%%", iana_version
     )
@@ -19,9 +22,12 @@ def generate_sbom():
 
 class bdist_wheel(_bdist_wheel):
     def write_wheelfile(self, wheelfile_base, *args, **kwargs):
-        super().write_wheelfile(wheelfile_base, *args, **kwargs)
-        (Path(wheelfile_base) / "sboms").mkdir(exist_ok=True)
-        (Path(wheelfile_base) / "sboms" / "sbom.cdx.json").write_text(generate_sbom())
+        super(bdist_wheel, self).write_wheelfile(wheelfile_base, *args, **kwargs)
+        sboms_dir = os.path.join(wheelfile_base, "sboms")
+        if not os.path.isdir(sboms_dir):
+            os.makedirs(sboms_dir)
+        with open(os.path.join(sboms_dir, "sbom.cdx.json"), "w") as f:
+            f.write(generate_sbom())
 
 
 cmdclass = {"bdist_wheel": bdist_wheel}
