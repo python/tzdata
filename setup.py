@@ -22,7 +22,7 @@ def generate_sbom():
 
 class bdist_wheel(_bdist_wheel):
     def write_wheelfile(self, wheelfile_base, *args, **kwargs):
-        super(bdist_wheel, self).write_wheelfile(wheelfile_base, *args, **kwargs)
+        _bdist_wheel.write_wheelfile(self, wheelfile_base, *args, **kwargs)
         sboms_dir = os.path.join(wheelfile_base, "sboms")
         if not os.path.isdir(sboms_dir):
             os.makedirs(sboms_dir)
