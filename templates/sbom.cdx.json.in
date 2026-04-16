@@ -1,0 +1,38 @@
+{
+  "$schema": "http://cyclonedx.org/schema/bom-1.7.schema.json",
+  "version": 1,
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.7",
+  "metadata": {
+    "component": {
+      "bom-ref": "pkg:pypi/tzdata@%%PACKAGE_VERSION%%",
+      "name": "tzdata",
+      "version": "%%PACKAGE_VERSION%%",
+      "purl": "pkg:pypi/tzdata@%%PACKAGE_VERSION%%",
+      "type": "library",
+      "components": [
+        {
+          "bom-ref": "https://www.iana.org/time-zones",
+          "name": "tz",
+          "version": "%%IANA_VERSION%%",
+          "type": "data",
+          "data": [
+            {
+              "type": "dataset",
+              "name": "IANA Time Zone Database",
+              "description": "zic-compiled TZif timezone files"
+            }
+          ],
+          "licenses": [
+            {
+              "license": {
+                "name": "tz database license",
+                "url": "https://data.iana.org/time-zones/tz-link.html"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
