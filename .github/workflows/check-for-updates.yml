@@ -5,9 +5,13 @@ on:
     - cron: '0 9 * * *'  # Runs daily at 9AM UTC
   workflow_dispatch:
 
+permissions: {}
+
 jobs:
   check-pr-exists:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
     outputs:
       pr_exists: ${{ steps.check_pr_exists.outputs.pr_exists }}
     steps:
@@ -16,15 +20,15 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          PR_EXISTS=$(gh pr --repo $GITHUB_REPOSITORY \
+          PR_EXISTS=$(gh pr --repo "$GITHUB_REPOSITORY" \
                       list --search "Update tzdata to version" \
                       --json number --jq '.[] | .number')
           if [ -n "$PR_EXISTS" ]; then
             echo "A PR updating the tzdata version already exists: https://github.com/python/tzdata/pulls/${PR_EXISTS}"
-            echo "pr_exists=true" >> $GITHUB_OUTPUT
+            echo "pr_exists=true" >> "$GITHUB_OUTPUT"
             exit 0
           else
-            echo "pr_exists=false" >> $GITHUB_OUTPUT
+            echo "pr_exists=false" >> "$GITHUB_OUTPUT"
           fi
 
   check-for-updates:
@@ -39,6 +43,7 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 1  # Shallow clone to save time
+          persist-credentials: false
 
       - name: Set up Python 3.12
         uses: actions/setup-python@v6
@@ -62,7 +67,7 @@ jobs:
           # Check for changes
           if git diff --quiet; then
             echo "No changes detected."
-            echo "CHANGES_DETECTED=false" >> $GITHUB_ENV
+            echo "CHANGES_DETECTED=false" >> "$GITHUB_ENV"
             exit 0
           fi
 
@@ -75,11 +80,11 @@ jobs:
             exit 1
           fi
 
-          if [ $(echo "$news_files" | wc -l) -ne 1 ]; then
+          if [ "$(echo "$news_files" | wc -l)" -ne 1 ]; then
             echo "More than one new file added in news.d, failing the job."
             exit 1
           fi
-          echo "CHANGES_DETECTED=true" >> $GITHUB_ENV
+          echo "CHANGES_DETECTED=true" >> "$GITHUB_ENV"
 
           # Extract TZDATA_VERSION from filename
           TZDATA_VERSION=$(basename "$news_files" .md)
@@ -87,7 +92,7 @@ jobs:
           # Extract TZDATA_NEWS from file content
           TZDATA_NEWS=$(cat "$news_files")
 
-          echo "TZDATA_VERSION=$TZDATA_VERSION" >> $GITHUB_ENV
+          echo "TZDATA_VERSION=$TZDATA_VERSION" >> "$GITHUB_ENV"
           {
             echo "TZDATA_NEWS<<EOF"
             echo "$TZDATA_NEWS"
@@ -111,5 +116,5 @@ jobs:
           gh pr create --title "Update tzdata to version $TZDATA_VERSION" \
             --body "$TZDATA_NEWS" \
             --base master \
-            --head $(git rev-parse --abbrev-ref HEAD) \
+            --head "$(git rev-parse --abbrev-ref HEAD)" \
             --label "automatic-updates"
