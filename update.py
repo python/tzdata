@@ -409,11 +409,11 @@ def read_news(tzdb_loc: pathlib.Path, version: str | None = None) -> NewsEntry:
                 break
         else:
             if version is None:
-                message = "No releases found!"
+                message = "No releases found in NEWS file!"
             else:
-                message = f"No release found with version {version}"
+                message = f"No release found with version {version} in NEWS file!"
+            raise ValueError(message)
 
-        assert m is not None
         version_date = datetime.strptime(m.group("date"), "%Y-%m-%d %H:%M:%S %z")
         release_version = m.group("version")
         release_contents, _ = read_block(f_lines)
