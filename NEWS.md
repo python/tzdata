@@ -1,3 +1,22 @@
+# Version 2026.2
+Upstream version 2026b released 2026-04-23T06:06:43+00:00
+
+## Briefly:
+
+British Columbia moved to permanent -07 on 2026-03-09. Some more overflow bugs
+have been fixed in zic.
+
+## Changes to future timestamps
+
+British Columbia’s 2026-03-08 spring forward was its last foreseeable clock
+change, as it moved to permanent -07 thereafter. (Thanks to Arthur David Olson.)
+Although the change to permanent -07 legally took place on 2026-03-09,
+temporarily model the change to occur on 2026-11-01 at 02:00 instead.  This
+works around a limitation in CLDR v48.2 (2026-03-17).  This temporary hack is
+planned to be removed after CLDR is fixed.
+
+---
+
 # Version 2026.1
 Upstream version 2026a released 2026-03-02T06:59:49+00:00
 
