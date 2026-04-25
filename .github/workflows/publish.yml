@@ -23,7 +23,6 @@ env:
   FORCE_COLOR: 1
 
 jobs:
-  # Always build & lint package.
   build-package:
     name: Build & verify package
     runs-on: ubuntu-latest
@@ -31,7 +30,6 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          fetch-depth: 0
           persist-credentials: false
 
       - uses: hynek/build-and-inspect-python-package@fe0a0fb1925ca263d076ca4f2c13e93a6e92a33e # v2.17.0
@@ -61,7 +59,6 @@ jobs:
         with:
           repository-url: https://test.pypi.org/legacy/
 
-  # Publish to PyPI on GitHub Releases.
   release-pypi:
     name: Publish to PyPI
     # Only run for published releases.
