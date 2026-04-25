@@ -117,7 +117,10 @@ def retrieve_local_tarballs(
 def unpack_tzdb_tarballs(
     download_locations: Sequence[pathlib.Path],
 ) -> pathlib.Path:
-    assert len(download_locations) == 4
+    if len(download_locations) not in (2, 4):
+        raise ValueError(
+            f"Expected 2 or 4 tarball-related paths, found: {len(download_locations)}"
+        )
     assert download_locations[0].parent == download_locations[1].parent
     base_dir = download_locations[0].parent.parent
     target_dir = base_dir / "tzdb"
@@ -399,7 +402,7 @@ def parse_categories(news_block: Sequence[str]) -> Mapping[str, str]:
 
 
 def read_news(tzdb_loc: pathlib.Path, version: str | None = None) -> NewsEntry:
-    release_re = re.compile(r"^Release (?P<version>\d{4}[a-z]) - (?P<date>.*$)")
+    release_re = re.compile(r"^Release (?P<version>\d{4}[a-z]+) - (?P<date>.*$)")
     with open(tzdb_loc / "NEWS", "rt") as f:
         f_lines = map(str.rstrip, f)
         for line in f_lines:
@@ -416,7 +419,12 @@ def read_news(tzdb_loc: pathlib.Path, version: str | None = None) -> NewsEntry:
 
         version_date = datetime.strptime(m.group("date"), "%Y-%m-%d %H:%M:%S %z")
         release_version = m.group("version")
-        release_contents, _ = read_block(f_lines)
+        try:
+            release_contents, _ = read_block(f_lines)
+        except StopIteration as exc:
+            raise ValueError(
+                f"Release {release_version} has no contents in NEWS file!"
+            ) from exc
 
     # Now we further parse the contents of the news and filter out some
     # irrelevant categories.
