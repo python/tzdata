@@ -5,6 +5,7 @@ on:
     branches:
       - master
   pull_request:
+  workflow_call:
   workflow_dispatch:
 
 permissions: {}
@@ -50,7 +51,7 @@ jobs:
     runs-on: "ubuntu-latest"
     strategy:
       matrix:
-        toxenv: ["build", "precommit", "typing", "docs"]
+        toxenv: ["precommit", "typing", "docs"]
     env:
       TOXENV: ${{ matrix.toxenv }}
 
