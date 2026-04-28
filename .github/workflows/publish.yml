@@ -45,9 +45,9 @@ jobs:
     needs: build-package
     uses: ./.github/workflows/tests.yml
 
-  # Publish to Test PyPI for every tag.
+  # Publish to TestPyPI for every tag.
   release-test-pypi:
-    name: Publish in-dev package to test.pypi.org
+    name: Publish to TestPyPI
     if: |
       github.event.repository.fork == false
       && github.event_name == 'push'
