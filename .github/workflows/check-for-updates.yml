@@ -115,6 +115,6 @@ jobs:
         run: |
           gh pr create --title "Update tzdata to version $TZDATA_VERSION" \
             --body "$TZDATA_NEWS" \
-            --base master \
+            --base main \
             --head "$(git rev-parse --abbrev-ref HEAD)" \
             --label "automatic-updates"

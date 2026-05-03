@@ -3,7 +3,7 @@ name: tzdata contents
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
   workflow_call:
   workflow_dispatch:
