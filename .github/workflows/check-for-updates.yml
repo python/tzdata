@@ -21,10 +21,11 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           PR_EXISTS=$(gh pr --repo "$GITHUB_REPOSITORY" \
-                      list --search "Update tzdata to version" \
+                      list --state open \
+                      --search 'in:title "Update tzdata to version"' \
                       --json number --jq '.[] | .number')
           if [ -n "$PR_EXISTS" ]; then
-            echo "A PR updating the tzdata version already exists: https://github.com/python/tzdata/pulls/${PR_EXISTS}"
+            echo "A PR updating the tzdata version already exists: https://github.com/python/tzdata/pull/${PR_EXISTS}"
             echo "pr_exists=true" >> "$GITHUB_OUTPUT"
             exit 0
           else
