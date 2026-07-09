@@ -50,14 +50,14 @@ repository root, and it is updated in two ways:
 
 1. The "base version" (e.g. 2020.1) is set by ``tox -e update``.
 2. The additional markers such as pre (release candidate), post and dev are
-   managed by ``tox -e bump_version``.
+   managed by ``tox -e bump``.
 
 The version follows the scheme::
 
     YYYY.minor[rcX][.postY][.devZ]
 
 Bumping any component removes all values to its right as well, so for example,
-if the base version were ``20201rc1.post2.dev0``::
+if the base version were ``2020.1rc1.post2.dev0``::
 
     $ tox -e bump -- --dev --dry-run
     ...
@@ -78,8 +78,8 @@ To remove all additional markers and get a simple "release" version, use
     ...
     2020.1rc1.post2.dev0 → 2020.1
 
-For more information on how to use ``bump_version``, run ``tox -e bump_version
--- -help``.
+For more information on how to use ``bump_version``, run ``tox -e bump
+-- --help``.
 
 Making a release
 ----------------
@@ -112,4 +112,4 @@ is immutable and each release burns a version number.
 
 .. Links
 .. |tox| replace:: ``tox``
-.. _tox: https://tox.readthedocs.io/en/latest/
+.. _tox: https://tox.wiki/en/latest/
