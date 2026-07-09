@@ -55,6 +55,13 @@ jobs:
     runs-on: ubuntu-latest
     needs: test-package
 
+    environment:
+      name: release
+      url: >-
+        https://pypi.org/project/tzdata/${{
+          github.event.release.tag_name
+        }}
+
     permissions:
       id-token: write
 
