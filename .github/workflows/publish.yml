@@ -58,7 +58,7 @@ jobs:
     environment:
       name: release
       url: >-
-        https://pypi.org/project/tzdata/${{
+        https://test.pypi.org/project/tzdata/${{
           github.event.release.tag_name
         }}
 
