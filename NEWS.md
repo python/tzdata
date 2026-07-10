@@ -1,3 +1,37 @@
+# Version 2026.3
+Upstream version 2026c released 2026-07-08T17:23:58+00:00
+
+## Briefly:
+
+Alberta moved to permanent -06 on 2026-06-18. Morocco moves to permanent +00 on
+2026-09-20. More integer overflow bugs have been fixed in zic.
+
+## Changes to future timestamps
+
+Alberta’s 2026-03-08 spring forward was its last foreseeable clock change, as it
+moved to permanent -06 thereafter.  (Thanks to Roozbeh Pournader and others.)
+Model this with its traditional abbreviation CST.  Although the change to
+permanent -06 legally took place on 2026-06-18, temporarily model the change to
+occur on 2026-11-01 at 02:00 instead, for the same reason we introduced a
+similarly temporary hack for British Columbia in 2026b.
+
+Although another TZDB release will likely be needed soon because Northwest
+Territories will likely follow Alberta, the legal formalities have not yet taken
+place.
+
+Morocco plans to move back to permanent UTC, without daylight saving time
+transitions, on 2026-09-20 at 02:00.  This also affects Western Sahara.
+
+## Changes to commentary
+
+Northwest Territories is expected to move to permanent -06 prior to 2026-11-01
+02:00, when clocks would otherwise fall back.  (Thanks to Tim Parenti and James
+Bellaire.)  Model this with its traditional abbreviation CST.  Unfortunately the
+change is not yet official, so it is currently present only as comments that can
+be uncommented as needed.
+
+---
+
 # Version 2026.2
 Upstream version 2026b released 2026-04-23T06:06:43+00:00
 
