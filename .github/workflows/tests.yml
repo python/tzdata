@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["2.7", "3.10", "3.11", "3.12", "3.13", "3.14", "3.15t", "3.15"]
+        python-version: ["2.7", "3.10", "3.11", "3.12", "3.13", "3.14", "3.15t", "3.15", "pypy3"]
         os: ["ubuntu-latest", "windows-latest", "macos-latest"]
         exclude:
           - python-version: "2.7"
@@ -25,8 +25,6 @@ jobs:
           - python-version: "2.7"
             os: "ubuntu-latest"
             use-container: true
-          # Test on latest PyPy
-          - python-version: "pypy3"
     env:
       TOXENV: py
     container:
