@@ -1,4 +1,4 @@
-# This workflow is triggered two ways:
+# This workflow is triggered in two ways:
 #
 # 1. When a tag is created, the workflow will upload the package to
 #    test.pypi.org.
