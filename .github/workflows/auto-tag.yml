@@ -3,7 +3,7 @@ name: Auto Tag on Version Bump
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - VERSION
 
