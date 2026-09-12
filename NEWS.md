@@ -1,3 +1,54 @@
+# Version 2026.4
+Upstream version 2026d released 2026-09-11T22:21:07+00:00
+
+## Briefly:
+
+Canada’s Northwest Territories moved to permanent -06 on 2026-08-21. Obsolescent
+settings like TZ="EST5EDT" now conform better to POSIX. Fix security,
+performance and porting bugs in zic and localtime.
+
+## Changes to future timestamps
+
+Canada’s Northwest Territories will not fall back on 2026-11-01 and will stay on
+-06 year-round, matching Alberta’s recent change. Model this with its
+traditional abbreviation CST.  Although the change to permanent -06 legally took
+place on 2026-08-21, temporarily model the change to occur on 2026-11-01 at
+02:00 for the same reason as other recent temporary hacks.  (Caution: see “NOTE
+FOR 2026b TEMPORARY HACK FOR CLDR AND CANADA” below.) This affects only
+America/Inuvik as the rest of the territory is covered by America/Edmonton, for
+which the equivalent change was released in 2026c.
+
+## Changes to past timestamps
+
+Colombia’s 1992-05-02 spring forward was at 00:00, not 24:00.
+
+Iran’s 1979-05-26 spring forward was at 00:00, not 24:00. (Thanks to N.F. Hase.)
+
+The backward-compatibility names EST5EDT, CST6CDT, MST7MDT, and PST8PDT now
+conform better to POSIX.  For example, EST5EDT now always uses the abbreviation
+"EST" for standard time (now always 5 hours behind UT) and "EDT" for daylight
+saving time, whereas it formerly had different UT offsets before standard time
+was introduced and sometimes used abbreviations like "LMT", "EWT" and "EPT", all
+contrary to POSIX.  Also, though not required by POSIX these names now use US
+federal rules rather than rules of places like New York, reverting to 2024a
+behavior.  This change affects only timestamps before 1966-10-30 at 01:00
+standard time.
+
+## Other data changes
+
+The temporary hacks used for North American timekeeping changes now work around
+a libstdc++ std::chrono bug in GCC 14.1-14.4, 15.1-15.2, and 16.1; see GCC bug
+124851.  This data change does not affect TZif files or timestamps.  The change
+does not work around the related but less serious GCC bugs 116110 and 124513.
+These GCC bugs are all fixed in GCC 16.2.
+
+## Changes to documentation
+
+URLs for release tarballs in tz-link.html have been updated to reflect their new
+canonical URLs on data.iana.org.
+
+---
+
 # Version 2026.3
 Upstream version 2026c released 2026-07-08T17:23:58+00:00
 
