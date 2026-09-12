@@ -64,7 +64,7 @@ def download_tzdb_tarballs(
     # Verify tarballs
     gpg_home = tempfile.TemporaryDirectory()
     gpg = gnupg.GPG(gnupghome=gpg_home.name)
-    gpg.recv_keys("hkps://keyserver.ubuntu.com", "ed97e90e62aa7e34")
+    gpg.recv_keys("hkps://keys.openpgp.org", "ed97e90e62aa7e34")
 
     for tar, asc in [(tzdata_file, tzdata_file_asc), (tzcode_file, tzcode_file_asc)]:
         tar_path = target_dir / tar
@@ -78,7 +78,9 @@ def download_tzdb_tarballs(
         with open(sig_path, "rb") as f:
             check = gpg.verify_file(f, str(tar_path))
         if not check.valid:
-            raise RuntimeError(f"signature verification failed for {tar_path}")
+            raise RuntimeError(
+                f"signature verification failed for {tar_path}: {check.status}"
+            )
 
     return download_locations
 
