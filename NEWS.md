@@ -1,3 +1,39 @@
+# Version 2026.6
+Upstream version 2026f released 2026-10-28T06:16:49+00:00
+
+## Briefly:
+
+Cuba will not fall back 2026-11-01; stays on -04 through 2027-11-07. No more
+leap seconds, and leap second tables no longer expire. Improve 1965/1966 data
+for Brazil.
+
+## Changes to future timestamps
+
+Cuba will not fall back to -05 on 2026-11-01 and instead plans to maintain -04
+through 2027-11-07.
+
+## Changes to past timestamps
+
+In 1965 Brazil ended DST on 03-31 at 24:00 not 00:00, and in 1966 it ended DST
+on 03-01 at 01:00 not 00:00.  (Thanks to Daniel Dias Rodrigues.)
+
+## Changes to documentation and commentary
+
+Documentation and commentary now reflect leap seconds’ demise.
+
+## Changes to commentary
+
+Discussion on timekeeping in northwestern Ontario has been updated to reflect
+that provincial regulation has been issued to allow these areas to stay aligned
+with America/Winnipeg and follow Manitoba’s adoption of year-round -05 after
+all.  (Thanks to Aoun Khan, Chris Walton, and Heitor David Pinto.)
+
+Discussion on timekeeping in Saskatchewan has been updated to document its new
+Time Act, 2026 which comes into force on 2026-10-30.  (Thanks to Heitor David
+Pinto.)  No change is expected.
+
+---
+
 # Version 2026.5
 Upstream version 2026e released 2026-09-30T00:14:38+00:00
 
